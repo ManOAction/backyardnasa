@@ -1,4 +1,4 @@
-"""This is a proof of concept for GPIO pins.
+"""This is a proof of concept for GPIO pins."""
 
 # imports
 from gpiozero import LED
