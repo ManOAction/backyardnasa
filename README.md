@@ -14,6 +14,12 @@ We're also using pipenv to manage dependencies.
 
 https://gist.github.com/bradtraversy/c70a93d6536ed63786c434707b898d55
 
+Current board is loaded up on a Pi B+
+pi@192.168.122.195 was the last known location
+-u pi -p raspberry
+
+
+
 #Requirements
 pipenv # Use pipenv shell to activate the environment.
 gpiozero  # Used to handle the GPIO pins.
