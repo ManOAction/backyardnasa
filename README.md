@@ -24,4 +24,10 @@ pi@192.168.122.195 was the last known location
 pipenv # Use pipenv shell to activate the environment.
 gpiozero  # Used to handle the GPIO pins.
 
-#TODO - How do withhold certain local files from pushing to the project?
+#TODO
+
+We've got it running straight in line.
+
+1) Refactor it into a looped program that waits for instructions and knows how to exit.
+2) Figure out Left, Right, and Reverse
+3) Figure out motor on / off from the sleep part of the motor controller
