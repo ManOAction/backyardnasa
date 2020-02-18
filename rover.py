@@ -8,8 +8,15 @@
 
 from gpiozero import Button, LED, Motor
 from time import sleep
-from decimal import Decimal
 
+# Constants (move externaly to a config when you have time)
+####################################################
+NinetyDegreeTime = float('1.6')
+OneEightyDegreeTime = float('3.2')
+RightTurnMod = float('1.109')
+MotorSpeed = float(.5)
+
+####################################################
 
 
 # ___  ___                                    _
@@ -24,8 +31,8 @@ from decimal import Decimal
 def move_forward(MoveTime):
     print('Moving forward.')
     MotorWake.on()
-    RMotor.forward()
-    LMotor.forward()
+    RMotor.forward(MotorSpeed)
+    LMotor.forward(MotorSpeed)
     sleep(MoveTime)
     RMotor.stop()
     LMotor.stop()
@@ -36,8 +43,8 @@ def move_forward(MoveTime):
 def move_reverse(MoveTime):
     print('Moving backwards.')
     MotorWake.on()
-    RMotor.backward()
-    LMotor.backward()
+    RMotor.backward(MotorSpeed)
+    LMotor.backward(MotorSpeed)
     sleep(MoveTime)
     RMotor.stop()
     LMotor.stop()
@@ -45,48 +52,39 @@ def move_reverse(MoveTime):
     return True
 
 def move_turnleft(MoveTime):
-    print('Turning left-ish.')
+    print('Turning left.')
     MotorWake.on()
-    RMotor.forward()
-    LMotor.backward()
+    RMotor.forward(MotorSpeed)
+    LMotor.backward(MotorSpeed)
     sleep(MoveTime)
     RMotor.stop()
     LMotor.stop()
     MotorWake.off()
     return True
 
-def move_turn90left(NinetyDegreeTime):
-    print('Turning 90 Left.')
+def move_turnright(MoveTime):
+    print('Turning right.')
     MotorWake.on()
-    RMotor.forward()
-    LMotor.backward()
-    sleep(NinetyDegreeTime)
+    RMotor.backward(MotorSpeed)
+    LMotor.forward(MotorSpeed)
+    sleep(MoveTime*RightTurnMod)
     RMotor.stop()
     LMotor.stop()
     MotorWake.off()
     return True
 
-def move_turn90right(NinetyDegreeTime):
-    print('Turning 90 Right.')
-    MotorWake.on()
-    LMotor.forward()
-    RMotor.backward()
-    sleep(NinetyDegreeTime)
-    RMotor.stop()
-    LMotor.stop()
-    MotorWake.off()
-    return True
+# Patterns
+##############################################
+def move_box(MoveTime):
+    move_forward(MoveTime)
+    move_turnleft(NinetyDegreeTime)
+    move_forward(MoveTime)
+    move_turnleft(NinetyDegreeTime)
+    move_forward(MoveTime)
+    move_turnleft(NinetyDegreeTime)
+    move_forward(MoveTime)
+    move_turnleft(NinetyDegreeTime)
 
-def move_turn180right(OneEightyDegreeTime):
-    print('Turning Around.')
-    MotorWake.on()
-    LMotor.forward()
-    RMotor.backward()
-    sleep(OneEightyDegreeTime)
-    RMotor.stop()
-    LMotor.stop()
-    MotorWake.off()
-    return True
 
 
 # ______
@@ -114,7 +112,8 @@ def rover_initialize():
 
     #############
     x for exit
-    wasd keys for directional controls.
+    wasd keys for directional controls. Capital letters for custom turns.
+    c for 180
     #############
 
     """)
@@ -125,16 +124,6 @@ def rover_initialize():
 def rover_loop():
 
     rover_quit = False
-
-    # Constants (move externaly to a config when you have time)
-    ####################################################
-    NinetyDegreeTime = '2'
-    OneEightyDegreeTime = '4'
-
-    ####################################################
-
-    print('90 Time is set to {0}'.format(NinetyDegreeTime))
-    print('180 Time is set to {0}'.format(OneEightyDegreeTime))
 
     while rover_quit != True:
 
@@ -152,7 +141,7 @@ def rover_loop():
 
         if user_input == 'a':
             print('90 Time is set to {0}'.format(NinetyDegreeTime))
-            move_turn90left(float(NinetyDegreeTime))
+            move_turnleft(float(NinetyDegreeTime))
 
         if user_input == 'A':
             print('For how many seconds?')
@@ -163,21 +152,19 @@ def rover_loop():
             move_reverse(float(input()))
 
         if user_input == 'd':
-            move_turn90right(float(NinetyDegreeTime))
+            move_turnright(float(NinetyDegreeTime))
 
         if user_input == 'D':
             print('For how many seconds?')
-            move_turn90right(float(input()))
+            move_turnright(float(input()))
 
         if user_input == 'c':
             print('180 Time is set to {0}'.format(OneEightyDegreeTime))
-            move_turn180right(float(OneEightyDegreeTime))
+            move_turnleft(float(OneEightyDegreeTime))
 
-        #Testing
-        ######################
-        if user_input == 'q':
-            print('For how many seconds?')
-            move_forward(float(input()))
+        if user_input == 'p':
+            print('How big a box?')
+            move_box(float(input()))
 
         rover_quit = False
 
