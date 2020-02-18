@@ -20,14 +20,19 @@ pi@192.168.122.195 was the last known location
 
 
 
-#Requirements
+# Dependencies
 pipenv # Use pipenv shell to activate the environment.
+
+# rover
 gpiozero  # Used to handle the GPIO pins.
+
+# twitterbot
+
 
 #TODO
 
-We've got it running straight in line.
+We have it running in simple patterns and looping through a rover command interface.
 
-1) Refactor it into a looped program that waits for instructions and knows how to exit.
-2) Figure out Left, Right, and Reverse
-3) Figure out motor on / off from the sleep part of the motor controller
+We need to add eyes so it learns object avoidance.
+
+Also get twitter bot up and running.

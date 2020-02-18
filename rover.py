@@ -13,8 +13,8 @@ from time import sleep
 ####################################################
 NinetyDegreeTime = float('1.6')
 OneEightyDegreeTime = float('3.2')
-RightTurnMod = float('1.109')
-MotorSpeed = float(.5)
+RightTurnMod = float('1') #float('1.109')
+MotorSpeed = float(1)
 
 ####################################################
 
