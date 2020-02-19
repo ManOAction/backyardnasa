@@ -10,9 +10,6 @@ Don't forget.  We're using this tutorial to get started.
 
 https://projects.raspberrypi.org/en/projects/physical-computing/3
 
-We're also using pipenv to manage dependencies.
-
-https://gist.github.com/bradtraversy/c70a93d6536ed63786c434707b898d55
 
 Current board is loaded up on a Pi B+
 pi@192.168.122.195 was the last known location
@@ -21,13 +18,13 @@ pi@192.168.122.195 was the last known location
 
 
 # Dependencies
-pipenv # Use pipenv shell to activate the environment.
+Developed in Python 3.6+
 
 # rover
 gpiozero  # Used to handle the GPIO pins.
 
 # twitterbot
-
+twython # Twitterbot library
 
 #TODO
 
