@@ -3,13 +3,17 @@ Robot Rover Project
 
 #ChangeLog
 2019-11-18, JDL -- First Draft
+2020-02-22, JDL -- Rover Patterns, Temp Sensors, and Chat Capabilities
 
 #Description
 
 We started using this tutorial.
 https://projects.raspberrypi.org/en/projects/physical-computing/3
 
-We're pretty far beyond that.   Currently trying to figure out I2C.
+We're pretty far beyond that.   
+############################################################
+
+Currently trying to figure out I2C.
 Using this tutorial.
 https://www.instructables.com/id/Raspberry-Pi-I2C-Python/
 Note: When it says "i2cdetect -y 0" you need to say "i2c detect -y 1"
@@ -26,6 +30,16 @@ like the back and forth and prohibits repeated status updates.
 
 We're reconfiguring the Pi to enable I2C and adding it to the kernal and some
 other stuff that seems complicated at this point.
+###########################################################
+
+Twitter is fussy about repeatable status updates.   Switching to Slack for right now.
+
+Check Bot Secrets for API info
+
+
+
+
+
 
 
 Current board is loaded up on a Pi B+
