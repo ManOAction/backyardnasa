@@ -6,9 +6,26 @@ Robot Rover Project
 
 #Description
 
-Don't forget.  We're using this tutorial to get started.
-
+We started using this tutorial.
 https://projects.raspberrypi.org/en/projects/physical-computing/3
+
+We're pretty far beyond that.   Currently trying to figure out I2C.
+Using this tutorial.
+https://www.instructables.com/id/Raspberry-Pi-I2C-Python/
+Note: When it says "i2cdetect -y 0" you need to say "i2c detect -y 1"
+
+We're using an ancient libary with docs listed here. (got to be something better)
+http://wiki.erazor-zone.de/wiki:linux:python:smbus:doc
+
+Also using this for the temp chip.
+https://pypi.org/project/Si7021/
+
+The sensor stuff works easy as pie.   The chat stuff is still sort of a mess.
+I think I'm going to make it into a slack bot instead of twitter.  Twitter doesn't
+like the back and forth and prohibits repeated status updates.
+
+We're reconfiguring the Pi to enable I2C and adding it to the kernal and some
+other stuff that seems complicated at this point.
 
 
 Current board is loaded up on a Pi B+

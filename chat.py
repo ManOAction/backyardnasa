@@ -1,12 +1,72 @@
-#!/usr/bin/env python
-# import sys
 from twython import Twython
 import bot_secrets.twit_secrets as secret
+from time import sleep
+import rover_tempsensor as sensor
 
-tweetStr = "Hey! I can talk! Or at least be forced to say things like a puppet."
+# tweets['statuses'][0]
+# tweettext = tweets['statuses'][0]['text']
+# uname = "@" + tweets['statuses'][0]['user']['screen_name']
+#
+# tweetStr = uname + ' ' + tweetStr
 
-api = Twython(secret.apiKey, secret.apiSecret, secret.accessToken, secret.accessTokenSecret)
 
-api.update_status(status=tweetStr)
+#Twitter Funcs
+#############################################
+def get_latest_tweet():
+    tweets = twitter.search(q=SearchTerm, result_type='latest')
+    return tweets['statuses'][0]
 
-print ("Tweeted: " + tweetStr)
+
+# Initialize
+#############################################
+def ChatInitialize():
+
+    global SearchTerm, twitter
+
+    SearchTerm = '%40nasabackyard'
+
+    twitter = Twython(secret.apiKey, secret.apiSecret, secret.accessToken, secret.accessTokenSecret)
+
+
+# Chat loop
+#############################################
+def ChatLoop():
+
+    print('Checking for new tweets...')
+
+    ChatExit = False
+
+    PreviousTweetTime = get_latest_tweet()['id']
+
+    while ChatExit == False:
+
+        print('Checking for new tweets...')
+
+        CurrentTweet = get_latest_tweet()
+        CurrentTemp = "%.2f degrees" % (sensor.get_temp()*1.8 + 32)
+        print(CurrentTemp)
+
+        if CurrentTweet['id'] > PreviousTweetTime:
+            UName = "@" + CurrentTweet['user']['screen_name']
+            TweetText = CurrentTweet['text']
+            if TweetText == '*what*temp*':
+                RespString = 'My Temp is {0}'.format(CurrentTemp)
+                ResponseTweet = UName + ' ' + RespString
+                twitter.update_status(status=ResponseTweet)
+            else:
+                RespString = 'I can hear you, I just don\'t know what to say.'
+                ResponseTweet = ResponseTweet = UName + ' ' + RespString
+                twitter.update_status(status=ResponseTweet)
+
+        # Exit the if statement and sleep
+        sleep(120)
+
+    return True
+
+
+# Execute
+#############################################
+
+ChatInitialize()
+
+ChatLoop()

@@ -11,10 +11,10 @@ from time import sleep
 
 # Constants (move externaly to a config when you have time)
 ####################################################
-NinetyDegreeTime = float('1.6')
-OneEightyDegreeTime = float('3.2')
+NinetyDegreeTime = float('.65')
+OneEightyDegreeTime = float('1.3')
 RightTurnMod = float('1') #float('1.109')
-MotorSpeed = float(1)
+MotorSpeed = float('1')
 
 ####################################################
 
