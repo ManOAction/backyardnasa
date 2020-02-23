@@ -36,9 +36,12 @@ Twitter is fussy about repeatable status updates.   Switching to Slack for right
 
 Check Bot Secrets for API info
 
+##########################################################
 
+Working on distance sensors.
 
-
+Following this to enable the SPI bus.
+https://tutorials-raspberrypi.com/infrared-distance-measurement-with-the-raspberry-pi-sharp-gp2y0a02yk0f/
 
 
 

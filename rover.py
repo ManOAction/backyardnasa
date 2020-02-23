@@ -9,6 +9,11 @@
 from gpiozero import Button, LED, Motor
 from time import sleep
 
+from smbus import SMBus
+from si7021 import Si7021
+
+
+
 # Constants (move externaly to a config when you have time)
 ####################################################
 NinetyDegreeTime = float('.65')
@@ -17,6 +22,17 @@ RightTurnMod = float('1') #float('1.109')
 MotorSpeed = float('1')
 
 ####################################################
+
+# Sensing
+####################################################
+
+def report_atmo():
+    a = AtmoSensor.read()
+    print('The temperature is %.2f °F.' % (a[1]*1.8 + 32))
+    print('The humidity is %.2f%%' % a[0])
+
+    return True
+
 
 
 # ___  ___                                    _
@@ -97,7 +113,9 @@ def move_box(MoveTime):
 
 def rover_initialize():
 
-    global RMotor, LMotor, MotorWake
+    global RMotor, LMotor, MotorWake, AtmoSensor
+
+    AtmoSensor = Si7021(SMBus(1))
 
     MotorWake = LED(17)
     MotorWake.off()
@@ -114,6 +132,9 @@ def rover_initialize():
     x for exit
     wasd keys for directional controls. Capital letters for custom turns.
     c for 180
+    b for Box Pattern
+
+    r for Atmospheric Report
     #############
 
     """)
@@ -162,9 +183,12 @@ def rover_loop():
             print('180 Time is set to {0}'.format(OneEightyDegreeTime))
             move_turnleft(float(OneEightyDegreeTime))
 
-        if user_input == 'p':
+        if user_input == 'b':
             print('How big a box?')
             move_box(float(input()))
+
+        if user_input == 'r':
+            report_atmo()
 
         rover_quit = False
 
