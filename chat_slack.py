@@ -82,3 +82,7 @@ def post_to_channel(message):
     return True
 
 ##############################################
+
+
+while __name__ == "__main__":
+    
