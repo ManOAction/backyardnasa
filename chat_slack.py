@@ -1,19 +1,19 @@
+
 import json
 import requests
+import re
 
 
-# https://slack.com/api/chat.postMessage?token=xoxb-918177779717-951780844322-EAGc8kwQU7IZLbKte6sWnoJg&channel=matilda-talk&text=Hello%20World.&pretty=1
+import bot_secrets.twit_secrets as secrets
 
-################# Post using Webhook
-# headers = { 'Content-type': 'application/json', }
-# data = '{"text":"Hello, World!"}'
-# response = requests.post('https://hooks.slack.com/services/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', headers=headers, data=data)
-# print(response.Content)
+
+
+
 
 
 ################ Post using chat api
 # headers = {
-#     'Authorization': 'Bearer xoxb-1234-56789abcdefghijklmnop',
+#     'Authorization': 'Bearer {0}'.format(secrets.SlackToken),
 #     'Content-type': 'application/json',
 # }
 #
@@ -33,7 +33,7 @@ import requests
 # ###############
 # headers = {
 #     'Content-type': 'application/x-www-form-urlencoded',
-#     'Authorization': 'Bearer xoxb-918177779717-951780844322-EAGc8kwQU7IZLbKte6sWnoJg'
+#     'Authorization': 'Bearer {0}'.format(secrets.SlackToken)
 # }
 #
 # data = """{
@@ -43,16 +43,42 @@ import requests
 #
 # response = requests.post('https://slack.com/api/chat.postMessage', headers=headers, data=data)
 #
-# print(response.content)fdgdf
+# print(response.content)
+# MatildaName = re.compile('<@UTZNYQU9G>')
 
 
-headers = {
-    'Content-type': 'application/x-www-form-urlencoded'
-}
+##############################################
+def get_most_recent_message():
+    headers = {
+        'Content-type': 'application/x-www-form-urlencoded'
+        }
 
-response = requests.get('https://slack.com/api/conversations.history?token=xoxb-918177779717-951780844322-EAGc8kwQU7IZLbKte6sWnoJg&channel=CUCGQMTHN&limit=15', headers=headers)
-response = json.loads(response.content)
-response = response['messages']
+    MessageText = False
 
-for message in response:
-    print(message['text'])
+    response = requests.get('https://slack.com/api/conversations.history?token={0}&channel=CUCGQMTHN&limit=15'.format(secrets.SlackToken), headers=headers)
+    response = json.loads(response.content)
+    # print(response)
+    response = response['messages']
+
+    for message in response:
+        if re.match(r"<@UTZNYQU9G>", message['text']):
+            MessageText = print(message['text'])
+            return MessageText
+
+    return MessageText
+
+
+def post_to_channel(message):
+    headers = {
+        'Content-type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Bearer {0}'.format(secrets.SlackToken)
+            }
+    data = """{
+        "channel":"#matilda-talk",
+        "text":"{0}".}
+        """.format(message)
+    response = requests.post('https://slack.com/api/chat.postMessage', headers=headers, data=data)
+
+    return True
+
+##############################################
