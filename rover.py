@@ -151,44 +151,48 @@ def rover_loop():
         print('What is thy bidding, master?')
         user_input = input()
 
-        # Core Commands
-        ######################
-        if user_input == 'x':
-            return False
+        try:
+            # Core Commands
+            ######################
+            if user_input == 'x':
+                return False
 
-        if user_input == 'w':
-            print('For how many seconds?')
-            move_forward(float(input()))
+            if user_input == 'w':
+                print('For how many seconds?')
+                move_forward(float(input()))
 
-        if user_input == 'a':
-            print('90 Time is set to {0}'.format(NinetyDegreeTime))
-            move_turnleft(float(NinetyDegreeTime))
+            if user_input == 'a':
+                print('90 Time is set to {0}'.format(NinetyDegreeTime))
+                move_turnleft(float(NinetyDegreeTime))
 
-        if user_input == 'A':
-            print('For how many seconds?')
-            move_turnleft(float(input()))
+            if user_input == 'A':
+                print('For how many seconds?')
+                move_turnleft(float(input()))
 
-        if user_input == 's':
-            print('For how many seconds?')
-            move_reverse(float(input()))
+            if user_input == 's':
+                print('For how many seconds?')
+                move_reverse(float(input()))
 
-        if user_input == 'd':
-            move_turnright(float(NinetyDegreeTime))
+            if user_input == 'd':
+                move_turnright(float(NinetyDegreeTime))
 
-        if user_input == 'D':
-            print('For how many seconds?')
-            move_turnright(float(input()))
+            if user_input == 'D':
+                print('For how many seconds?')
+                move_turnright(float(input()))
 
-        if user_input == 'c':
-            print('180 Time is set to {0}'.format(OneEightyDegreeTime))
-            move_turnleft(float(OneEightyDegreeTime))
+            if user_input == 'c':
+                print('180 Time is set to {0}'.format(OneEightyDegreeTime))
+                move_turnleft(float(OneEightyDegreeTime))
 
-        if user_input == 'b':
-            print('How big a box?')
-            move_box(float(input()))
+            if user_input == 'b':
+                print('How big a box?')
+                move_box(float(input()))
 
-        if user_input == 'r':
-            report_atmo()
+            if user_input == 'r':
+                report_atmo()
+                
+        except Exception as errormessage:
+            print('You f*ed up!')
 
         rover_quit = False
 
