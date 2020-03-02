@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP Adafruit_Breakout_DRV8833
+D Adafruit Breakout Board, Motor Driver DRV8833
+K Adafruit Breakout Board, Motor Driver DRV8833
+F https://www.pololu.com/product/2982
+$ENDCMP
+#
+#End Doc Library

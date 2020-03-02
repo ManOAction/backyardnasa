@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name CustomSymbolLibrary)(type Legacy)(uri "G:/Shared drives/Data and Tech/PythonModules/BackyardNASA/schematics/CustomSymbolLibrary.lib")(options "")(descr ""))
+)

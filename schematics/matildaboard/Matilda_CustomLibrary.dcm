@@ -1,0 +1,25 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP AdaBrk_Si7021
+D Adafruit Breakout for Si7021 Sensor
+K Adafruit Breakout Si7021 Temperature Humidity Sensor
+$ENDCMP
+#
+$CMP Adafruit_Breakout_DRV8833
+D Adafruit Breakout Board, Motor Driver DRV8833
+K Adafruit Breakout Board, Motor Driver DRV8833
+F https://www.pololu.com/product/2982
+$ENDCMP
+#
+$CMP Matilda_Battery_Cell
+D Single-cell battery
+K battery cell
+F ~
+$ENDCMP
+#
+$CMP Woo_StepUp_MT3608
+D WOWOONE DC to DC Voltage StepUp MT3608
+K WOWOONE DC to DC Power Voltage StepUp MT3608
+$ENDCMP
+#
+#End Doc Library

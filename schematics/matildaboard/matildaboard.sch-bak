@@ -24,23 +24,23 @@ F 3 "" H 4200 3350 50  0001 C CNN
 	1    4200 2650
 	0    1    -1   0   
 $EndComp
-Text GLabel 4650 1150 3    50   Input ~ 0
+Text GLabel 5000 1200 3    50   Input ~ 0
 3.3V
-Text GLabel 4750 1150 3    50   Input ~ 0
+Text GLabel 5100 1200 3    50   Input ~ 0
 GND
-Text GLabel 4850 1150 3    50   Input ~ 0
+Text GLabel 5200 1200 3    50   Input ~ 0
 Logic_1
-Text GLabel 4950 1150 3    50   Input ~ 0
+Text GLabel 5300 1200 3    50   Input ~ 0
 Logic_2
-Text GLabel 5050 1150 3    50   Input ~ 0
+Text GLabel 5400 1200 3    50   Input ~ 0
 Logic_3
-Text GLabel 5150 1150 3    50   Input ~ 0
+Text GLabel 5500 1200 3    50   Input ~ 0
 Logic_4
-Text GLabel 5250 1150 3    50   Input ~ 0
+Text GLabel 5600 1200 3    50   Input ~ 0
 Logic_5
-Text GLabel 4450 1150 3    50   Input ~ 0
+Text GLabel 4800 1200 3    50   Input ~ 0
 SDA
-Text GLabel 4550 1150 3    50   Input ~ 0
+Text GLabel 4900 1200 3    50   Input ~ 0
 SCL
 Text GLabel 4500 2450 2    50   Input ~ 0
 SDA
@@ -56,6 +56,31 @@ Text GLabel 5100 4200 0    50   Input ~ 0
 Logic_4
 Text GLabel 5100 4050 0    50   Input ~ 0
 Logic_5
+$Comp
+L Connector_Generic_MountingPin:Conn_01x04_MountingPin J2
+U 1 1 5E580D73
+P 7150 4200
+F 0 "J2" H 7238 4114 50  0000 L CNN
+F 1 "Conn_01x04_MountingPin" H 7238 4023 50  0000 L CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical" H 7150 4200 50  0001 C CNN
+F 3 "~" H 7150 4200 50  0001 C CNN
+	1    7150 4200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5900 4500 6950 4500
+Wire Wire Line
+	6950 4500 6950 4400
+Wire Wire Line
+	5900 4350 6950 4350
+Wire Wire Line
+	6950 4350 6950 4300
+Wire Wire Line
+	5900 4200 6950 4200
+Wire Wire Line
+	5900 4050 6950 4050
+Wire Wire Line
+	6950 4050 6950 4100
 NoConn ~ 5650 2050
 NoConn ~ 5350 2050
 NoConn ~ 4500 2750
@@ -86,6 +111,8 @@ Text GLabel 7350 1050 0    50   Input ~ 0
 GND
 Text GLabel 7350 750  0    50   Input ~ 0
 3.3V
+NoConn ~ 7150 4600
+NoConn ~ 5800 1000
 $Comp
 L Matilda_CustomLibrary:Matilda_Battery_Cell BT1
 U 1 1 5E58F4BD
@@ -97,6 +124,18 @@ F 3 "~" V 7350 1010 50  0001 C CNN
 	1    7350 950 
 	1    0    0    -1  
 $EndComp
+$Comp
+L Connector_Generic_MountingPin:Conn_01x10_MountingPin J1
+U 1 1 5E5736DB
+P 5100 1000
+F 0 "J1" V 5325 868 50  0000 C CNN
+F 1 "Conn_01x10_MountingPin" V 5234 868 50  0000 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x10_P2.54mm_Vertical" H 5100 1000 50  0001 C CNN
+F 3 "~" H 5100 1000 50  0001 C CNN
+	1    5100 1000
+	0    -1   -1   0   
+$EndComp
+NoConn ~ 4700 1200
 $Comp
 L Matilda_CustomLibrary:Adafruit_Breakout_DRV8833 A1
 U 1 1 5E5962E7
@@ -139,40 +178,4 @@ Text GLabel 5100 3750 0    50   Input ~ 0
 GND
 NoConn ~ 5900 3900
 NoConn ~ 5900 3750
-$Comp
-L Connector:Conn_01x09_Female J1
-U 1 1 5E59EDE1
-P 4850 950
-F 0 "J1" V 5015 930 50  0000 C CNN
-F 1 "Conn_01x09_Female" V 4924 930 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x09_P2.54mm_Vertical" H 4850 950 50  0001 C CNN
-F 3 "~" H 4850 950 50  0001 C CNN
-	1    4850 950 
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Connector:Conn_01x04_Female J2
-U 1 1 5E5A5861
-P 6800 4200
-F 0 "J2" H 6828 4176 50  0000 L CNN
-F 1 "Conn_01x04_Female" H 6828 4085 50  0000 L CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical" H 6800 4200 50  0001 C CNN
-F 3 "~" H 6800 4200 50  0001 C CNN
-	1    6800 4200
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5900 4500 6600 4500
-Wire Wire Line
-	6600 4500 6600 4400
-Wire Wire Line
-	5900 4350 6600 4350
-Wire Wire Line
-	6600 4350 6600 4300
-Wire Wire Line
-	5900 4200 6600 4200
-Wire Wire Line
-	5900 4050 6600 4050
-Wire Wire Line
-	6600 4050 6600 4100
 $EndSCHEMATC
