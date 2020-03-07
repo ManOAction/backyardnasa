@@ -4,14 +4,24 @@
 2019-11-24, JDL: First draft.
 2020-02-15, JDL: Creating stable loops and move commands
 
+# Dependencies
+We're using the circuit python blinka library because we're using so many adafruit breakout
+boards.  https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuitpython-on-raspberry-pi
+pip3 install adafruit-blinka
+
 """
 
 from gpiozero import Button, LED, Motor
 from time import sleep
 
-from smbus import SMBus
-from si7021 import Si7021
 
+# These are the Blinka tools for managing the related sensors
+import board
+import busio
+import adafruit_fxos8700 # accelo / magnetometer
+import adafruit_fxas21002c # gyro
+import adafruit_hcsr04 # sonic sensor
+import adafruit_si7021 # temp and humidiy
 
 
 # Constants (move externaly to a config when you have time)
@@ -20,6 +30,7 @@ NinetyDegreeTime = float('.65')
 OneEightyDegreeTime = float('1.3')
 RightTurnMod = float('1') #float('1.109')
 MotorSpeed = float('1')
+
 
 ####################################################
 
@@ -32,6 +43,16 @@ def report_atmo():
     print('The humidity is %.2f%%' % a[0])
 
     return True
+
+def report_dist():
+    samples = 3
+    i = 0
+    while i < 40:
+        d = DistSense.read('cm', samples)
+        print(d, 'cm')
+        sleep(.25)
+        i += 1
+
 
 
 
@@ -89,6 +110,7 @@ def move_turnright(MoveTime):
     MotorWake.off()
     return True
 
+
 # Patterns
 ##############################################
 def move_box(MoveTime):
@@ -100,6 +122,33 @@ def move_box(MoveTime):
     move_turnleft(NinetyDegreeTime)
     move_forward(MoveTime)
     move_turnleft(NinetyDegreeTime)
+
+def move_hunt():
+    objectfound = 0
+    d = DistSense.read('cm', 3)
+    while objectfound < 3:
+        MotorWake.on()
+        RMotor.forward(float(MotorSpeed*.5))
+        LMotor.forward(float(MotorSpeed*.5))
+        print('Moving Forward...')
+        d = 0
+
+        while d == 0 or d > 30:
+            d = DistSense.read('cm', 3)
+            print(d, 'cm Loop')
+
+        RMotor.stop()
+        LMotor.stop()
+        MotorWake.off()
+        print('Object Found!')
+        objectfound += 1
+        sleep(1)
+        print('Reversing...')
+        move_reverse(float(.5))
+        sleep(1)
+        print('Turning...')
+        move_turnright(float(.5))
+        sleep(1)
 
 
 
@@ -113,9 +162,22 @@ def move_box(MoveTime):
 
 def rover_initialize():
 
-    global RMotor, LMotor, MotorWake, AtmoSensor
+    global RMotor, LMotor, MotorWake, AtmoSensor, DistSense, Accelo, Gyro
 
-    AtmoSensor = Si7021(SMBus(1))
+    # Initializing I2C for sensors
+    i2c = busio.I2C(board.SCL, board.SDA)
+
+    # Initializing Gyro and Magnetometer
+    Accelo = adafruit_fxos8700.FXOS8700(i2c)
+    Gyro = adafruit_fxas21002c.FXAS21002C(i2c)
+
+    # Initializing Atmo Sensor
+    AtmoSensor = adafruit_si7021.SI7021(i2c)
+
+    # Annoyingly it looks like the HCSR04 Libary uses DPI Pin Numbering instead
+    # of Broadcom.  Check here https://pinout.xyz/pinout/pin18_gpio24
+    # BCM 23 & 24 are DPI 19 and 20
+    DistSense = adafruit_hcsr04.HCSR04(trigger_pin=board.D19, echo_pin=board.D20) # Read about speed of sound calibration in docs
 
     MotorWake = LED(17)
     MotorWake.off()
@@ -126,8 +188,6 @@ def rover_initialize():
 
     print("""
 
-
-
     #############
     x for exit
     wasd keys for directional controls. Capital letters for custom turns.
@@ -135,6 +195,8 @@ def rover_initialize():
     b for Box Pattern
 
     r for Atmospheric Report
+    p for Distance Sensing Mode
+    h for Hunt Mode
     #############
 
     """)
@@ -190,9 +252,17 @@ def rover_loop():
 
             if user_input == 'r':
                 report_atmo()
-                
+
+            if user_input == 'p':
+                report_dist()
+
+            if user_input == 'h':
+                move_hunt()
+
         except Exception as errormessage:
-            print('You f*ed up!')
+            print('Problem with user input...')
+            print(errormessage)
+
 
         rover_quit = False
 
