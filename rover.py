@@ -142,13 +142,13 @@ def move_hunt():
         MotorWake.off()
         print('Object Found!')
         objectfound += 1
-        sleep(1)
+        sleep(3)
         print('Reversing...')
-        move_reverse(float(.5))
-        sleep(1)
+        move_reverse(float(1))
+        sleep(3)
         print('Turning...')
-        move_turnright(float(.5))
-        sleep(1)
+        move_turnright(float(1))
+        sleep(3)
 
 
 
@@ -172,7 +172,7 @@ def rover_initialize():
     Gyro = adafruit_fxas21002c.FXAS21002C(i2c)
 
     # Initializing Atmo Sensor
-    AtmoSensor = adafruit_si7021.SI7021(i2c)
+    AtmoSensor = Si7021(SMBus(1))
 
     # Annoyingly it looks like the HCSR04 Libary uses DPI Pin Numbering instead
     # of Broadcom.  Check here https://pinout.xyz/pinout/pin18_gpio24
