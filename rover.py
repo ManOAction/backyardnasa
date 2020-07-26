@@ -16,19 +16,18 @@ from time import sleep
 
 
 # These are the Blinka tools for managing the related sensors
-import board
-import busio
-import adafruit_fxos8700 # accelo / magnetometer
-import adafruit_fxas21002c # gyro
-import adafruit_hcsr04 # sonic sensor
-import adafruit_si7021 # temp and humidiy
-
+from busio import I2C
+from board import SCL, SDA
+import adafruit_fxos8700  # accelo / magnetometer
+import adafruit_fxas21002c  # gyro
+import adafruit_hcsr04  # sonic sensor
+import adafruit_si7021  # temp and humidiy
 
 # Constants (move externaly to a config when you have time)
 ####################################################
 NinetyDegreeTime = float('.65')
 OneEightyDegreeTime = float('1.3')
-RightTurnMod = float('1') #float('1.109')
+RightTurnMod = float('1')  # float('1.109')
 MotorSpeed = float('1')
 
 
@@ -165,26 +164,26 @@ def rover_initialize():
     global RMotor, LMotor, MotorWake, AtmoSensor, DistSense, Accelo, Gyro
 
     # Initializing I2C for sensors
-    i2c = busio.I2C(board.SCL, board.SDA)
+    i2c = I2C(SCL, SDA)
 
     # Initializing Gyro and Magnetometer
     Accelo = adafruit_fxos8700.FXOS8700(i2c)
     Gyro = adafruit_fxas21002c.FXAS21002C(i2c)
 
     # Initializing Atmo Sensor
-    AtmoSensor = Si7021(SMBus(1))
+    AtmoSensor = adafruit_si7021.SI7021(i2c)
 
     # Annoyingly it looks like the HCSR04 Libary uses DPI Pin Numbering instead
     # of Broadcom.  Check here https://pinout.xyz/pinout/pin18_gpio24
     # BCM 23 & 24 are DPI 19 and 20
-    DistSense = adafruit_hcsr04.HCSR04(trigger_pin=board.D19, echo_pin=board.D20) # Read about speed of sound calibration in docs
+    DistSense = adafruit_hcsr04.HCSR04(trigger_pin=board.D19, echo_pin=board.D20)  # Read about speed of sound calibration in docs
 
     MotorWake = LED(17)
     MotorWake.off()
 
-    #Args are GPIO Pins for forward, backward, and motor controller sleep
-    LMotor = Motor(20, 21) # Motor(19, 26, 13)
-    RMotor = Motor(19, 26) # Motor(20, 21, 13)
+    # Args are GPIO Pins for forward, backward, and motor controller sleep
+    LMotor = Motor(20, 21)  # Motor(19, 26, 13)
+    RMotor = Motor(19, 26)  # Motor(20, 21, 13)
 
     print("""
 

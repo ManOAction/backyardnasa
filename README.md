@@ -4,6 +4,7 @@ Robot Rover Project
 #ChangeLog
 2019-11-18, JDL -- First Draft
 2020-02-22, JDL -- Rover Patterns, Temp Sensors, and Chat Capabilities
+2020-07-25, JDL -- Starting it up again.  Stuff's broke.
 
 #Description
 
@@ -32,9 +33,7 @@ We're reconfiguring the Pi to enable I2C and adding it to the kernal and some
 other stuff that seems complicated at this point.
 ###########################################################
 
-Twitter is fussy about repeatable status updates.   Switching to Slack for right now.
-
-Check Bot Secrets for API info
+Check Bot Secrets for API info related to Chatbots
 
 ##########################################################
 
@@ -52,18 +51,12 @@ pi@192.168.122.195 was the last known location
 
 
 # Dependencies
-Developed in Python 3.6+
+Developed in Python 3.6
 
-# rover
-gpiozero  # Used to handle the GPIO pins.
+# Diary
 
-# twitterbot
-twython # Twitterbot library
-
-#TODO
-
-We have it running in simple patterns and looping through a rover command interface.
-
-We need to add eyes so it learns object avoidance.
-
-Also get twitter bot up and running.
+7/25, JDL - Starting back into it, and stuff's broke as we were mixed up between the Blinka library
+  from Adafruit and the old stuff we had.  Frustrated because it was working until I patched a change.
+  Locomotion is the only thing working and it only works at low voltage (<5V).  I need to find if I
+  can use capacitors or something else to prevent the battery from shorting anytime I want more
+  voltage from it.  Trying to start piece by piece putting things back online.
