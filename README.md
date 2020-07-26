@@ -57,7 +57,9 @@ Developed in Python 3.6
 
 # Diary
 
-7/25, JDL - i2cdetect -y 1 to
+7/26, JDL - This is dumb.  After looking at the official CircuitPython libraries for the HCSR04, they
+  just have a poor feature set compared to this guy's custom one.  https://github.com/MarkAHeywood/Bluetin_Python_Echo
+  I'm switching back to using it.
 
 7/25, JDL - Starting back into it, and stuff's broke as we were mixed up between the Blinka library
   from Adafruit and the old stuff we had.  Frustrated because it was working until I patched a change.

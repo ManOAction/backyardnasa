@@ -23,6 +23,7 @@ import adafruit_fxas21002c  # gyro
 import adafruit_hcsr04  # sonic sensor
 from adafruit_si7021 import SI7021  # temp and humidiy
 
+
 # Constants (move externaly to a config when you have time)
 ####################################################
 NinetyDegreeTime = float('.65')
@@ -174,8 +175,9 @@ def rover_initialize():
 
     # Annoyingly it looks like the HCSR04 Libary uses DPI Pin Numbering instead
     # of Broadcom.  Check here https://pinout.xyz/pinout/pin18_gpio24
+    # Read about speed of sound calibration in doc
     # BCM 23 & 24 are DPI 19 and 20
-    # DistSense = adafruit_hcsr04.HCSR04(trigger_pin=board.D19, echo_pin=board.D20)  # Read about speed of sound calibration in docs
+    DistSense = adafruit_hcsr04.HCSR04(trigger_pin=board.D19, echo_pin=board.D20)
 
     MotorWake = LED(17)
     MotorWake.off()
