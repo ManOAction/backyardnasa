@@ -17,11 +17,11 @@ from time import sleep
 
 # These are the Blinka tools for managing the related sensors
 from busio import I2C
-from board import SCL, SDA
+import board
 import adafruit_fxos8700  # accelo / magnetometer
 import adafruit_fxas21002c  # gyro
 import adafruit_hcsr04  # sonic sensor
-import adafruit_si7021  # temp and humidiy
+from adafruit_si7021 import SI7021  # temp and humidiy
 
 # Constants (move externaly to a config when you have time)
 ####################################################
@@ -37,9 +37,8 @@ MotorSpeed = float('1')
 ####################################################
 
 def report_atmo():
-    a = AtmoSensor.read()
-    print('The temperature is %.2f °F.' % (a[1]*1.8 + 32))
-    print('The humidity is %.2f%%' % a[0])
+    print("The Temperature: %0.1f F" % (AtmoSensor.temperature*(9/5)+32))
+    print("Humidity: %0.1f %%" % AtmoSensor.relative_humidity)
 
     return True
 
@@ -164,19 +163,19 @@ def rover_initialize():
     global RMotor, LMotor, MotorWake, AtmoSensor, DistSense, Accelo, Gyro
 
     # Initializing I2C for sensors
-    i2c = I2C(SCL, SDA)
+    i2c = I2C(board.SCL, board.SDA)
 
     # Initializing Gyro and Magnetometer
     Accelo = adafruit_fxos8700.FXOS8700(i2c)
     Gyro = adafruit_fxas21002c.FXAS21002C(i2c)
 
     # Initializing Atmo Sensor
-    AtmoSensor = adafruit_si7021.SI7021(i2c)
+    AtmoSensor = SI7021(i2c)
 
     # Annoyingly it looks like the HCSR04 Libary uses DPI Pin Numbering instead
     # of Broadcom.  Check here https://pinout.xyz/pinout/pin18_gpio24
     # BCM 23 & 24 are DPI 19 and 20
-    DistSense = adafruit_hcsr04.HCSR04(trigger_pin=board.D19, echo_pin=board.D20)  # Read about speed of sound calibration in docs
+    # DistSense = adafruit_hcsr04.HCSR04(trigger_pin=board.D19, echo_pin=board.D20)  # Read about speed of sound calibration in docs
 
     MotorWake = LED(17)
     MotorWake.off()

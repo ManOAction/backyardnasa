@@ -35,6 +35,8 @@ other stuff that seems complicated at this point.
 
 Check Bot Secrets for API info related to Chatbots
 
+User i2cdetect -y 1 to confirm I2C connections
+
 ##########################################################
 
 Working on distance sensors.
@@ -54,6 +56,8 @@ pi@192.168.122.195 was the last known location
 Developed in Python 3.6
 
 # Diary
+
+7/25, JDL - i2cdetect -y 1 to
 
 7/25, JDL - Starting back into it, and stuff's broke as we were mixed up between the Blinka library
   from Adafruit and the old stuff we had.  Frustrated because it was working until I patched a change.
