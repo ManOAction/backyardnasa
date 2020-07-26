@@ -1,3 +1,11 @@
+"""This is an abandoned sensor project related to the
+Pololu Carrier for Sharp GP2Y0D810Z0F Digital Distance Sensor.
+
+That sensor is better suited open/closed doors, but we might use it for something
+some day.
+
+"""
+
 #!/usr/bin/python
 import spidev
 

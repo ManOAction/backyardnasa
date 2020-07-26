@@ -1,3 +1,8 @@
+"""This is the draft of the twitter chatbot.  We're current (7/26) switching to
+Slack for our first bot.
+
+"""
+
 from twython import Twython
 import bot_secrets.twit_secrets as secret
 from time import sleep

@@ -1,27 +1,46 @@
-"""This is a proof of concept for GPIO pins and a centralized file for these commands.
+"""This is the central rover behavior script.  This holds the behavior for roving
+and basic UI.
 
 # changelog
-2019-11-24, JDL: First draft.
 2020-02-15, JDL: Creating stable loops and move commands
+2019-11-24, JDL: First draft.
+
 
 # Dependencies
-We're using the circuit python blinka library because we're using so many adafruit breakout
-boards.  https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuitpython-on-raspberry-pi
-pip3 install adafruit-blinka
+
+Blinka Library
+-------------
+https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuitpython-on-raspberry-pi
+sudo pip3 install adafruit-blinka -U
+
+busio
+board
+adafruit_fxos8700
+adafruit_fxas21002c
+adafruit_si7021
+------------
+
+Bluetin Echo
+------------
+https://github.com/MarkAHeywood/Bluetin_Python_Echo
+sudo pip3 install Bluetin_Echo -U
+
+Bluetin_Echo
+------------
 
 """
 
-from gpiozero import Button, LED, Motor
+from gpiozero import LED, Motor
 from time import sleep
 
 
 # These are the Blinka tools for managing the related sensors
 from busio import I2C
 import board
-import adafruit_fxos8700  # accelo / magnetometer
-import adafruit_fxas21002c  # gyro
-from Bluetin_Echo import Echo  # HCSR04 Module Uses BCM Pins!
+from adafruit_fxos8700 import FXOS8700  # accelo / magnetometer
+from adafruit_fxas21002c import FXAS21002C  # gyro
 from adafruit_si7021 import SI7021  # temp and humidiy
+from Bluetin_Echo import Echo  # HCSR04 Module Uses BCM Pins!
 
 
 # Constants (move externaly to a config when you have time)
@@ -46,6 +65,7 @@ def report_atmo():
 
     return True
 
+
 def report_dist():
     samples = 3
     i = 0
@@ -55,7 +75,7 @@ def report_dist():
         sleep(.25)
         i += 1
 
-
+    return True
 
 
 # ___  ___                                    _
@@ -153,7 +173,6 @@ def move_hunt():
         sleep(1)
 
 
-
 # ______
 # | ___ \
 # | |_/ /_____   _____ _ __
@@ -161,6 +180,24 @@ def move_hunt():
 # | |\ \ (_) \ V /  __/ |
 # \_| \_\___/ \_/ \___|_|
 #################################################
+def display_options():
+        print("""
+
+        #############
+        x for exit
+        wasd keys for directional controls. Capital letters for custom turns.
+        c for 180
+        b for Box Pattern
+
+        r for Atmospheric Report
+        p for Distance Sensing Mode
+        h for Hunt Mode
+        #############
+
+        """)
+
+        return True
+
 
 def rover_initialize():
 
@@ -170,8 +207,8 @@ def rover_initialize():
     i2c = I2C(board.SCL, board.SDA)
 
     # Initializing Gyro and Magnetometer
-    Accelo = adafruit_fxos8700.FXOS8700(i2c)
-    Gyro = adafruit_fxas21002c.FXAS21002C(i2c)
+    Accelo = FXOS8700(i2c)
+    Gyro = FXAS21002C(i2c)
 
     # Initializing Atmo Sensor
     AtmoSensor = SI7021(i2c)
@@ -189,21 +226,6 @@ def rover_initialize():
     LMotor = Motor(20, 21)  # Motor(19, 26, 13)
     RMotor = Motor(19, 26)  # Motor(20, 21, 13)
 
-    print("""
-
-    #############
-    x for exit
-    wasd keys for directional controls. Capital letters for custom turns.
-    c for 180
-    b for Box Pattern
-
-    r for Atmospheric Report
-    p for Distance Sensing Mode
-    h for Hunt Mode
-    #############
-
-    """)
-
     return True
 
 
@@ -212,6 +234,8 @@ def rover_loop():
     rover_quit = False
 
     while rover_quit != True:
+
+        display_options()
 
         print('What is thy bidding, master?')
         user_input = input()
@@ -265,7 +289,6 @@ def rover_loop():
         except Exception as errormessage:
             print('Problem with user input...')
             print(errormessage)
-
 
         rover_quit = False
 

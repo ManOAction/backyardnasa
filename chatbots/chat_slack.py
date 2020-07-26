@@ -1,4 +1,4 @@
-
+"""Draft of our Slack Chatbot."""
 import json
 import requests
 import re
@@ -85,4 +85,3 @@ def post_to_channel(message):
 
 
 while __name__ == "__main__":
-    
