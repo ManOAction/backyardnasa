@@ -1,13 +1,19 @@
-# backyardnasa
-Robot Rover Project
+# Backyard NASA Rover Project
+I figured making a robot rover that lived on its own somewhere and sent pictures of
+rocks back to me couldn't be that hard if the gubberment folks at NASA could do it.
 
-#ChangeLog
+Her name is Matilda, and this is her story.
+
+We started using this tutorial.
+https://projects.raspberrypi.org/en/projects/physical-computing/3
+
+# ChangeLog
 2020-07-26, JDL -- Motors, Atmo, Sonic, and Magna systems are all working.
 2020-07-25, JDL -- Starting it up again.  Stuff's broke.
 2020-02-22, JDL -- Rover Patterns, Temp Sensors, and Chat Capabilities
 2019-11-18, JDL -- First Draft
 
-#TODO
+# TODO
 Heading Based Turning: Use the magnetometer to turn in degree increments rather
     than time based increments.
 
@@ -17,14 +23,10 @@ Twin Sonic Sensors: Sensors need to be mounted over tracks and facing down to lo
 Chatbot: The chatbot needs to be put in the cloud and have it occasionally request
     things of Matilda probably through processes independent of the rover loop.
 
-#Other Ideas
+# Other Ideas
 Automatic Hard Iron Offset Recalibration: Use the magnet calibrator logic in the middle of
     360 turning to reset and reassign offset variables.
 
-#Description
-
-We started using this tutorial.
-https://projects.raspberrypi.org/en/projects/physical-computing/3
 
 # Changes from Stock Raspian Setup
 ############################################################
