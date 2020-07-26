@@ -20,7 +20,7 @@ from busio import I2C
 import board
 import adafruit_fxos8700  # accelo / magnetometer
 import adafruit_fxas21002c  # gyro
-import adafruit_hcsr04  # sonic sensor
+from Bluetin_Echo import Echo  # HCSR04 Module Uses BCM Pins!
 from adafruit_si7021 import SI7021  # temp and humidiy
 
 
@@ -31,6 +31,9 @@ OneEightyDegreeTime = float('1.3')
 RightTurnMod = float('1')  # float('1.109')
 MotorSpeed = float('1')
 
+mag_offset_x = float('25')
+mag_offset_y = float('-28')
+mag_offset_z = float('-85')
 
 ####################################################
 
@@ -141,13 +144,13 @@ def move_hunt():
         MotorWake.off()
         print('Object Found!')
         objectfound += 1
-        sleep(3)
+        sleep(1)
         print('Reversing...')
         move_reverse(float(1))
-        sleep(3)
+        sleep(1)
         print('Turning...')
-        move_turnright(float(1))
-        sleep(3)
+        move_turnright(float(1.25))
+        sleep(1)
 
 
 
@@ -177,7 +180,7 @@ def rover_initialize():
     # of Broadcom.  Check here https://pinout.xyz/pinout/pin18_gpio24
     # Read about speed of sound calibration in doc
     # BCM 23 & 24 are DPI 19 and 20
-    DistSense = adafruit_hcsr04.HCSR04(trigger_pin=board.D19, echo_pin=board.D20)
+    DistSense = Echo(23, 24)
 
     MotorWake = LED(17)
     MotorWake.off()
