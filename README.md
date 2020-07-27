@@ -54,6 +54,22 @@ pi@192.168.122.195 was the last known location
 
 ##########################################################
 
+# Broad Roadmap
+##########################################################
+
+Phase I: Basic Capabilities:
+  - Pictures of Objects
+  - Geofencing
+  - Talking to Slack Channel  
+  - Passive Charging and Voltage Checking
+
+Phase II: Initial Backyard Trials
+  - Success after multiple days of continuous operation achieved
+
+Phase III: Scale to Pasture Size
+  - Build to "coffee table" size
+
+Phase IV: Profit?
 
 # Diary
 ##########################################################

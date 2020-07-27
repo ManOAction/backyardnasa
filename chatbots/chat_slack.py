@@ -2,9 +2,7 @@
 import json
 import requests
 import re
-
-
-import bot_secrets.twit_secrets as secrets
+import twit_secrets as secrets
 
 
 
