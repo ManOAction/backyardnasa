@@ -8,20 +8,14 @@ We started using this tutorial.
 https://projects.raspberrypi.org/en/projects/physical-computing/3
 
 # ChangeLog
+2020-12-27, JDL -- Updating diary and writing new roadmap for 2021
 2020-07-26, JDL -- Motors, Atmo, Sonic, and Magna systems are all working.
 2020-07-25, JDL -- Starting it up again.  Stuff's broke.
 2020-02-22, JDL -- Rover Patterns, Temp Sensors, and Chat Capabilities
 2019-11-18, JDL -- First Draft
 
 # TODO
-Heading Based Turning: Use the magnetometer to turn in degree increments rather
-    than time based increments.
-
-Twin Sonic Sensors: Sensors need to be mounted over tracks and facing down to look
-    cliffs and drop offs.
-
-Chatbot: The chatbot needs to be put in the cloud and have it occasionally request
-    things of Matilda probably through processes independent of the rover loop.
+  Now being tracked in the "Current Roadmap Section"
 
 # Other Ideas
 Automatic Hard Iron Offset Recalibration: Use the magnet calibrator logic in the middle of
@@ -71,8 +65,30 @@ Phase III: Scale to Pasture Size
 
 Phase IV: Profit?
 
+# Current Roadmap (Newly drafted on 12/27)
+##########################################################
+
+Separate Motor Power Supply
+  - This means having the computer run on a self contained system away from the
+  drive motors.
+
+  - Twin Sonic Sensors (HCSR04) for the left and right bumpers.
+
+  - Functioning camera module that talks to a social account (slack?)
+
+  - Update 3D printed housing for sensors, Pi, and batteries.
+
+  - Capable of autonomous functioning until batteries deplete themselves.
+
 # Diary
 ##########################################################
+
+12/27, JDL - After lying dormant for months, matilda boots and runs fine, but the motors and power issue
+  remain an issue.   I'm going to pursue using a NiMH battery to power the motors with a MOSFET in between
+  to turn the battery on and off.  It looks like charging NiMH is a bit of a pain, but we're going to move
+  forward with it since it's what we've got.   Passive charging/recharging may be a feature that is a long
+  ways down the road.  We may as well get it to function long enough to deplete it's batteries before we try
+  to learn how to recharge it.
 
 7/26, JDL - I got tripped up on BCM/DPI pin numbering and it took a long time to fix.  Everything's working
   right now.  I'm going to clean up the codebase and then move on to a new feature to add.
