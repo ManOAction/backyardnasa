@@ -1,5 +1,5 @@
-"""This is the central rover behavior script.  This holds the behavior for roving
-and basic UI.
+"""This is the central rover behavior script.  This holds the behavior for
+roving =and basic UI.
 
 # changelog
 2020-02-15, JDL: Creating stable loops and move commands
@@ -48,7 +48,7 @@ from Bluetin_Echo import Echo  # HCSR04 Module Uses BCM Pins!
 NinetyDegreeTime = float('.65')
 OneEightyDegreeTime = float('1.3')
 RightTurnMod = float('1')  # float('1.109')
-MotorSpeed = float('1')
+MotorSpeed = float('.8')
 
 mag_offset_x = float('25')
 mag_offset_y = float('-28')
@@ -58,6 +58,7 @@ mag_offset_z = float('-85')
 
 # Sensing
 ####################################################
+
 
 def report_atmo():
     print("The Temperature: %0.1f F" % (AtmoSensor.temperature*(9/5)+32))
@@ -99,6 +100,7 @@ def move_forward(MoveTime):
     print('End moving forward.')
     return True
 
+
 def move_reverse(MoveTime):
     print('Moving backwards.')
     MotorWake.on()
@@ -110,6 +112,7 @@ def move_reverse(MoveTime):
     MotorWake.off()
     return True
 
+
 def move_turnleft(MoveTime):
     print('Turning left.')
     MotorWake.on()
@@ -120,6 +123,7 @@ def move_turnleft(MoveTime):
     LMotor.stop()
     MotorWake.off()
     return True
+
 
 def move_turnright(MoveTime):
     print('Turning right.')
@@ -144,6 +148,7 @@ def move_box(MoveTime):
     move_turnleft(NinetyDegreeTime)
     move_forward(MoveTime)
     move_turnleft(NinetyDegreeTime)
+
 
 def move_hunt():
     objectfound = 0
@@ -181,22 +186,22 @@ def move_hunt():
 # \_| \_\___/ \_/ \___|_|
 #################################################
 def display_options():
-        print("""
+    print("""
 
-        #############
-        x for exit
-        wasd keys for directional controls. Capital letters for custom turns.
-        c for 180
-        b for Box Pattern
+    #############
+    x for exit
+    wasd keys for directional controls. Capital letters for custom turns.
+    c for 180
+    b for Box Pattern
 
-        r for Atmospheric Report
-        p for Distance Sensing Mode
-        h for Hunt Mode
-        #############
+    r for Atmospheric Report
+    p for Distance Sensing Mode
+    h for Hunt Mode
+    #############
 
-        """)
+    """)
 
-        return True
+    return True
 
 
 def rover_initialize():
@@ -233,7 +238,7 @@ def rover_loop():
 
     rover_quit = False
 
-    while rover_quit != True:
+    while rover_quit is not True:
 
         display_options()
 
@@ -301,7 +306,7 @@ def rover_loop():
 # |  __\ \/ / _ \/ __| | | | __/ _ \
 # | |___>  <  __/ (__| |_| | ||  __/
 # \____/_/\_\___|\___|\__,_|\__\___|
-################################################################################
+###############################################################################
 
 if __name__ == '__main__':
     rover_initialize()

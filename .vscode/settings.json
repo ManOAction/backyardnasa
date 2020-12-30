@@ -1,0 +1,12 @@
+{
+    "workbench.colorTheme": "Material Theme High Contrast",
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "workbench.editorAssociations": [
+        {
+            "viewType": "jupyter.notebook.ipynb",
+            "filenamePattern": "*.ipynb"
+        }
+    ],
+    "python.linting.banditEnabled": true
+}
