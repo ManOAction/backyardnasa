@@ -70,9 +70,11 @@ def report_atmo():
 def report_dist():
     samples = 3
     i = 0
-    while i < 40:
-        d = DistSense.read('cm', samples)
-        print(d, 'cm')
+    while i < 20:
+        d = LeftEye.read('cm', samples)
+        print('Left: ', d, 'cm')
+        d = RightEye.read('cm', samples)
+        print('Right: ', d, 'cm')
         sleep(.25)
         i += 1
 
@@ -152,17 +154,21 @@ def move_box(MoveTime):
 
 def move_hunt():
     objectfound = 0
-    d = DistSense.read('cm', 3)
+    dL = LeftEye.read('cm', 3)
+    dR = RightEye.read('cm', 3)
     while objectfound < 3:
         MotorWake.on()
-        RMotor.forward(float(MotorSpeed*.5))
-        LMotor.forward(float(MotorSpeed*.5))
+        RMotor.forward(float(MotorSpeed*.3))
+        LMotor.forward(float(MotorSpeed*.3))
         print('Moving Forward...')
-        d = 0
+        dL = 0
+        dR = 0
 
-        while d == 0 or d > 30:
-            d = DistSense.read('cm', 3)
-            print(d, 'cm Loop')
+        while (dL == 0 or dL > 30) and (dR == 0 or dR > 30):
+            dL = LeftEye.read('cm', 3)
+            print('Left ', dL, 'cm')
+            dR = RightEye.read('cm', 3)
+            print('Right ', dR, 'cm')
 
         RMotor.stop()
         LMotor.stop()
@@ -171,10 +177,10 @@ def move_hunt():
         objectfound += 1
         sleep(1)
         print('Reversing...')
-        move_reverse(float(1))
+        move_reverse(float(.8))
         sleep(1)
         print('Turning...')
-        move_turnright(float(1.25))
+        move_turnright(float(.6))
         sleep(1)
 
 
@@ -206,7 +212,7 @@ def display_options():
 
 def rover_initialize():
 
-    global RMotor, LMotor, MotorWake, AtmoSensor, DistSense, Accelo, Gyro
+    global RMotor, LMotor, MotorWake, AtmoSensor, LeftEye, RightEye, Accelo, Gyro
 
     # Initializing I2C for sensors
     i2c = I2C(board.SCL, board.SDA)
@@ -222,7 +228,8 @@ def rover_initialize():
     # of Broadcom.  Check here https://pinout.xyz/pinout/pin18_gpio24
     # Read about speed of sound calibration in doc
     # BCM 23 & 24 are DPI 19 and 20
-    DistSense = Echo(23, 24)
+    LeftEye = Echo(23, 24)
+    RightEye = Echo(17, 27)
 
     MotorWake = LED(17)
     MotorWake.off()

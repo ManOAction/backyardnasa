@@ -2,6 +2,12 @@
 
 # Diary
 
+2020-01-02, JDL: Picking this up again.   We're pursuing an IBM Watson and Slack
+combo.
+https://cloud.ibm.com/docs/assistant?topic=assistant-getting-started
+https://www.ibm.com/support/knowledgecenter/SS7P7S_vehicles/watson-assistant-solutions/slack/about_slackbot.html
+https://api.slack.com/tutorials/watson-sentiment
+
 7/27 - This Watson linked Chatbot looks like exactly what we need.
 https://api.slack.com/tutorials/watson-sentiment
 Maybe this too for learning about webhooks.  This seems like an easier solution.
