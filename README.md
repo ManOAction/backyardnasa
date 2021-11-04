@@ -7,7 +7,11 @@ Her name is Matilda, and this is her story.
 We started using this tutorial.
 https://projects.raspberrypi.org/en/projects/physical-computing/3
 
+New Documentation is being implemented here in Notion:
+https://www.notion.so/Matilda-4c2012eff4d847c4a76360bea5a4a66a
+
 # ChangeLog
+2021-10-29, JDL -- Oh man, it's been a long time.  Moving docs to Notion and learning ROS
 2020-12-27, JDL -- Updating diary and writing new roadmap for 2021
 2020-07-26, JDL -- Motors, Atmo, Sonic, and Magna systems are all working.
 2020-07-25, JDL -- Starting it up again.  Stuff's broke.
