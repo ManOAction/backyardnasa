@@ -19,7 +19,7 @@ MotorSpeed = float('.8')
 # Starting over after moving to ubuntu.
 
 # Initializing I2C for sensors
-i2c = I2C(board.SCL, board.SDA)
+# i2c = I2C(board.SCL, board.SDA)
 
 # Initializing Gyro and Magnetometer
 # Accelo = FXOS8700(i2c)
