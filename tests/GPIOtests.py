@@ -1,41 +1,61 @@
 
 
 from time import sleep
-import RPi.GPIO as GPIO
 
-# GPIO Initialization
-GPIO.setmode (GPIO.BCM)
-GPIO.setwarnings (True)
-
-# GPIO Pin Mode
-GPIO.setup(20, GPIO.OUT)
-GPIO.setup(21, GPIO.OUT)
-
-GPIO.setup(17, GPIO.OUT)  # Driver switch.
-
-# Shut it all off.
-GPIO.output(17, 0)
-GPIO.output(20, 0)
-GPIO.output(21, 0)
+from gpiozero import LED, Motor
 
 
-# Turn driver on.
-GPIO.output(17, 1)
+MotorWake = LED(17)
+MotorWake.off()
 
-# Turn motor forward?
-GPIO.output(20, 0)
-GPIO.output(21, 1)
+RMotor = Motor(20, 21)
 
-sleep(1)
+MotorWake.on()
 
-# Reset and shut off
-GPIO.output(17, 0)
-GPIO.output(20, 0)
-GPIO.output(21, 0)
+MotorSpeed = float('.8')
 
-GPIO.cleanup()
+RMotor.forward(MotorSpeed)
 
 
+
+###################################################################################
+
+# import RPi.GPIO as GPIO
+
+# # GPIO Initialization
+# GPIO.setmode (GPIO.BCM)
+# GPIO.setwarnings (True)
+
+# """
+# 17 - Motor Driver Board On/Off
+# 20 - RMoter Forward
+# 21 - RMoter Reverse
+# """
+
+# OutputPins = [17, 20, 21]
+# GPIO.setup(OutputPins, GPIO.OUT)
+# GPIO.output(OutputPins, 0)  # Setting all outputs to off.
+
+
+# # Turn driver on.
+# GPIO.output(17, 1)
+
+# # Turn motor forward?
+# GPIO.output(20, 0)
+# GPIO.output(21, 1)
+
+# sleep(1)
+
+# # Reset and shut off
+# GPIO.output(17, 0)
+# GPIO.output(20, 0)
+# GPIO.output(21, 0)
+
+# GPIO.cleanup()
+
+
+
+##################################################################################
 
 # These are the Blinka tools for managing the related sensors
 # from gpiozero import LED, Motor
