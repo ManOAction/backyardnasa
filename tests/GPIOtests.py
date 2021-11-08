@@ -40,6 +40,7 @@ from time import sleep
 
 from busio import I2C
 import board
+from adafruit_si7021 import SI7021
 i2c = I2C(board.SCL, board.SDA)
 
 
