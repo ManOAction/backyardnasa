@@ -2,56 +2,45 @@
 This is the test script and diary of getting the servo hat to work.
 
 For starters we're following this tutorial.
-https://learn.adafruit.com/adafruit-16-channel-pwm-servo-hat-for-raspberry-pi/attach-and-test-the-hat
+https://learn.adafruit.com/adafruit-16-channel-pwm-servo-hat-for-raspberry-pi/using-the-python-library
 
-2020-12-29, JDL: First Draft
+2021-10-31, JDL: Retry after earlier setbacks.
 
 """
 
-from time import sleep
-# from smbus import SMBus
-# import board
-# import busio
-# from __future__ import division
+from adafruit_servokit import ServoKit
+import time
 
-# Import the PCA9685 module.
-import Adafruit_PCA9685
+kit = ServoKit(channels=16, address=0x41)  # Don't forget we moved the address.
 
+servo_loop_quit = False
 
-# Uncomment to enable debug output.
-# import logging
-# logging.basicConfig(level=logging.DEBUG)
+while servo_loop_quit != True:
 
-# Initialise the PCA9685 using the default address (0x40).
-pwm = Adafruit_PCA9685.PCA9685()
+    print('Want to move the arms? (y/n)')
 
-# Alternatively specify a different address and/or bus:
-# pwm = Adafruit_PCA9685.PCA9685(address=0x41, busnum=2)
+    user_input = input()
 
-# Configure min and max servo pulse lengths
-servo_min = 150  # Min pulse length out of 4096
-servo_max = 600  # Max pulse length out of 4096
+    try:
+        if user_input == 'y':
 
+            user_input = input("0 or 1?")
 
-# Helper function to make setting a servo pulse width simpler.
-def set_servo_pulse(channel, pulse):
-    pulse_length = 1000000    # 1,000,000 us per second
-    pulse_length //= 60       # 60 Hz
-    print('{0}us per period'.format(pulse_length))
-    pulse_length //= 4096     # 12 bits of resolution
-    print('{0}us per bit'.format(pulse_length))
-    pulse *= 1000
-    pulse //= pulse_length
-    pwm.set_pwm(channel, 0, pulse)
+            if int(user_input) == 0:
+                ZeroArmAngle = int(input("Angle of servo 0?"))
+                kit.servo[0].angle = ZeroArmAngle
+            elif int(user_input) == 1:
+                OneArmAngle = int(input("Angle of servo 1?"))
+                kit.servo[1].angle = OneArmAngle
+
+        if user_input == 'n':
+            print('Exiting loop.')
+            servo_loop_quit = True
+
+    except Exception as errormessage:
+        print('Problem with user input...')
+        print(errormessage)
+        servo_loop_quit = False
 
 
-# Set frequency to 60hz, good for servos.
-pwm.set_pwm_freq(60)
-
-print('Moving servo on channel 0, press Ctrl-C to quit...')
-while True:
-    # Move servo on channel O between extremes.
-    pwm.set_pwm(0, 0, servo_min)
-    sleep(1)
-    pwm.set_pwm(0, 0, servo_max)
-    sleep(1)
+print("End of File")

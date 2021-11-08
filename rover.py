@@ -152,19 +152,39 @@ def move_box(MoveTime):
     move_turnleft(NinetyDegreeTime)
 
 
+def findpath(direction):
+    
+    dL = 1
+    dR = 1
+    while (dR == 0 or dL <= 80) and (dR == 0 or dR <= 80):
+        if direction == 'left':
+            move_turnleft(float(.1))
+        elif direction == 'right':
+            move_turnright(float(.1))
+        else:
+            print('Impossible directon parameter.')
+            raise ValueError
+
+        sleep(.5)
+        dL = LeftEye.read('cm', 3)
+        dR = RightEye.read('cm', 3)
+    
+    return True
+            
+
 def move_hunt():
     objectfound = 0
-    dL = LeftEye.read('cm', 3)
-    dR = RightEye.read('cm', 3)
-    while objectfound < 3:
+    dL = LeftEye.read('cm', 5)
+    dR = RightEye.read('cm', 5)
+    while objectfound < 100:
         MotorWake.on()
-        RMotor.forward(float(MotorSpeed*.3))
-        LMotor.forward(float(MotorSpeed*.3))
+        RMotor.forward(float(MotorSpeed*.2))
+        LMotor.forward(float(MotorSpeed*.2))
         print('Moving Forward...')
         dL = 0
         dR = 0
 
-        while (dL == 0 or dL > 30) and (dR == 0 or dR > 30):
+        while (dL == 0 or dL > 40) and (dR == 0 or dR > 40):
             dL = LeftEye.read('cm', 3)
             print('Left ', dL, 'cm')
             dR = RightEye.read('cm', 3)
@@ -175,13 +195,19 @@ def move_hunt():
         MotorWake.off()
         print('Object Found!')
         objectfound += 1
-        sleep(1)
-        print('Reversing...')
-        move_reverse(float(.8))
-        sleep(1)
+        sleep(.5)
+        # print('Reversing...')
+        # move_reverse(float(.3))
+        # sleep(1)
         print('Turning...')
-        move_turnright(float(.6))
-        sleep(1)
+        print(f'Right eye distance was {dR}.')
+        if (int(dR) % 2) == 0:
+            print(f"""That's an even number, so I'm turning right.""")
+            findpath('right')
+        else:
+            print(f"""That's an odd number, so I'm turning left.""")
+            findpath('left')
+        
 
 
 # ______
@@ -235,8 +261,8 @@ def rover_initialize():
     MotorWake.off()
 
     # Args are GPIO Pins for forward, backward, and motor controller sleep
-    LMotor = Motor(20, 21)  # Motor(19, 26, 13)
-    RMotor = Motor(19, 26)  # Motor(20, 21, 13)
+    RMotor = Motor(20, 21)  # Motor(19, 26, 13)
+    LMotor = Motor(19, 26)  # Motor(20, 21, 13)
 
     return True
 
