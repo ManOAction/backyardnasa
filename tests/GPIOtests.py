@@ -15,7 +15,8 @@ MotorWake.on()
 MotorSpeed = float('.8')
 
 RMotor.forward(MotorSpeed)
-
+sleep(1)
+MotorWake.off()
 
 
 ###################################################################################
