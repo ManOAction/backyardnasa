@@ -17,25 +17,47 @@ from time import sleep
 # sleep(1)
 # MotorWake.off()
 
-from Bluetin_Echo import Echo  # Uses BCM Pins.
+# from Bluetin_Echo import Echo  # Uses BCM Pins.
 
-LeftEye = Echo(23, 24)
-RightEye = Echo(17, 27)
+# LeftEye = Echo(23, 24)
+# RightEye = Echo(17, 27)
 
-def report_dist():
-    samples = 3
-    i = 0
-    while i < 20:
-        d = LeftEye.read('cm', samples)
-        print('Left: ', d, 'cm')
-        d = RightEye.read('cm', samples)
-        print('Right: ', d, 'cm')
-        sleep(.25)
-        i += 1
+# def report_dist():
+#     samples = 3
+#     i = 0
+#     while i < 20:
+#         d = LeftEye.read('cm', samples)
+#         print('Left: ', d, 'cm')
+#         d = RightEye.read('cm', samples)
+#         print('Right: ', d, 'cm')
+#         sleep(.25)
+#         i += 1
 
-    return True
+#     return True
 
-report_dist()
+# report_dist()
+
+
+from busio import I2C
+i2c = I2C(board.SCL, board.SDA)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
