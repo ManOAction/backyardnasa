@@ -2,57 +2,41 @@
 
 from time import sleep
 
-from gpiozero import LED, Motor
+# from gpiozero import LED, Motor
 
+# MotorWake = LED(17)
+# MotorWake.off()
 
-MotorWake = LED(17)
-MotorWake.off()
+# RMotor = Motor(20, 21)
 
-RMotor = Motor(20, 21)
+# MotorWake.on()
 
-MotorWake.on()
+# MotorSpeed = float('.8')
 
-MotorSpeed = float('.8')
-
-RMotor.forward(MotorSpeed)
-sleep(1)
-MotorWake.off()
-
-
-###################################################################################
-
-# import RPi.GPIO as GPIO
-
-# # GPIO Initialization
-# GPIO.setmode (GPIO.BCM)
-# GPIO.setwarnings (True)
-
-# """
-# 17 - Motor Driver Board On/Off
-# 20 - RMoter Forward
-# 21 - RMoter Reverse
-# """
-
-# OutputPins = [17, 20, 21]
-# GPIO.setup(OutputPins, GPIO.OUT)
-# GPIO.output(OutputPins, 0)  # Setting all outputs to off.
-
-
-# # Turn driver on.
-# GPIO.output(17, 1)
-
-# # Turn motor forward?
-# GPIO.output(20, 0)
-# GPIO.output(21, 1)
-
+# RMotor.forward(MotorSpeed)
 # sleep(1)
+# MotorWake.off()
 
-# # Reset and shut off
-# GPIO.output(17, 0)
-# GPIO.output(20, 0)
-# GPIO.output(21, 0)
+from Bluetin_Echo import Echo  # Uses BCM Pins.
 
-# GPIO.cleanup()
+LeftEye = Echo(23, 24)
+RightEye = Echo(17, 27)
+
+def report_dist():
+    samples = 3
+    i = 0
+    while i < 20:
+        d = LeftEye.read('cm', samples)
+        print('Left: ', d, 'cm')
+        d = RightEye.read('cm', samples)
+        print('Right: ', d, 'cm')
+        sleep(.25)
+        i += 1
+
+    return True
+
+report_dist()
+
 
 
 
