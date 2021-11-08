@@ -39,6 +39,7 @@ from time import sleep
 
 
 from busio import I2C
+import board
 i2c = I2C(board.SCL, board.SDA)
 
 
