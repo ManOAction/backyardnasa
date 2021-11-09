@@ -15,7 +15,7 @@ from time import sleep
 import time
 
 camera = PiCamera()
-PictureDirectory = '/home/pi/BackyardNASA/'
+PictureDirectory = '/home/ubuntu/backyardnasa/images/'
 
 def GetPic():
     camera.start_preview()
