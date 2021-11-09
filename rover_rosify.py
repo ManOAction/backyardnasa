@@ -117,7 +117,7 @@ class MotionController:
         self.MotorWake = LED(PinMotorWake)
         super().__init__()
 
-    def move_forward(self, MoveTime, MoveSpeed="1"):
+    def move_forward(self, MoveTime, MoveSpeed=float("1")):
         print('Moving forward.')
         self.MotorWake.on()
         self.RMotor.forward(MoveSpeed)
@@ -129,7 +129,7 @@ class MotionController:
         print('End moving forward.')
         return True
 
-    def move_reverse(self, MoveTime, MoveSpeed="1"):
+    def move_reverse(self, MoveTime, MoveSpeed=float("1")):
         print('Moving backwards.')
         self.MotorWake.on()
         self.RMotor.backward(MoveSpeed)
@@ -140,7 +140,7 @@ class MotionController:
         self.MotorWake.off()
         return True
 
-    def move_turnleft(self, MoveTime, MoveSpeed="1"):
+    def move_turnleft(self, MoveTime, MoveSpeed=float("1")):
         print('Turning left.')
         self.MotorWake.on()
         self.RMotor.forward(MoveSpeed)
@@ -151,7 +151,7 @@ class MotionController:
         self.MotorWake.off()
         return True
 
-    def move_turnright(self, MoveTime, MoveSpeed="1"):
+    def move_turnright(self, MoveTime, MoveSpeed=float("1")):
         print('Turning right.')
         self.MotorWake.on()
         self.LMotor.forward(MoveSpeed)
