@@ -136,6 +136,8 @@ def main():
     Rover.move_forward(1)
     print('exiting main...')
 
+main()
+
 # def move_reverse(MoveTime):
 #     print('Moving backwards.')
 #     MotorWake.on()
