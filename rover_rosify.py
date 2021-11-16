@@ -44,9 +44,9 @@ from time import sleep
 
 
 # ROS 2 Related Imports
-# import rclpy
-# from rclpy.node import Node
-# from std_msgs.msg import String
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String
 
 
 # # Constants (move externaly to a config when you have time)
@@ -162,6 +162,40 @@ class MotionController:
         self.MotorWake.off()
         return True
 
+    def stop(self):
+        print('Motor controller shut off...')        
+        self.MotorWake.off()
+        return True
+
+
+class MinimalSubscriber(Node):
+    def __init__(self) -> None:
+        super().__init__()('minimal_subscriber')
+        self.subscription = self.create_subscription(
+            String,
+            'move',
+            self.listener_callback,
+            10
+        )
+        # self.subscription   arning  # What is this?  Is it a typo?
+
+        self.rover = MotionController()
+
+    def listener_callback(self, msg):
+        command = msg.data
+        if command == 'forward':
+            print('moving forward')
+            self.rover.move_forward(1)
+        elif command == 'backward':
+            print('moving backward')
+            self.rover.move_reverse(1)
+        elif command == 'left':
+            print('turning left')
+            self.rover.turnleft(1)
+        elif command == 'right':
+            print('turning right')
+            self.rover.turnright(1)
+
     # def findpath(direction):
     #     dL = 1
     #     dR = 1
@@ -217,40 +251,49 @@ class MotionController:
     #             findpath('left')
 
 
-def main():
-    DefaultMoveTime = 1
+def main(args=None):
+    rclpy.init(args=args)
+    minimal_subscriber = MinimalSubscriber()
 
-    # Setup Rover
-    Rover = MotionController(vPinMotorWake, vPinRMotF, vPinRMotR, vPinLMotF, vPinLMotR)
-    print('Rover initialized.')
+    rclpy.spin(minimal_subscriber)
 
-    # Test Rover Forward
-    Rover.move_forward(DefaultMoveTime)
+    minimal_subscriber.rover.stop()
 
-    sleep(1)
+    # DefaultMoveTime = 1
 
-    # Test Rover Forward
-    Rover.move_forward(DefaultMoveTime, MoveSpeed=float(".25"))
+    # # Setup Rover
+    # Rover = MotionController(vPinMotorWake, vPinRMotF, vPinRMotR, vPinLMotF, vPinLMotR)
+    # print('Rover initialized.')
 
-    sleep(1)
+    # # Test Rover Forward
+    # Rover.move_forward(DefaultMoveTime)
 
-    # Test Rover Forward
-    Rover.move_reverse(DefaultMoveTime)
+    # sleep(1)
 
-    sleep(1)
+    # # Test Rover Forward
+    # Rover.move_forward(DefaultMoveTime, MoveSpeed=float(".25"))
 
-    # Test Rover Forward
-    Rover.move_turnleft(DefaultMoveTime)
+    # sleep(1)
 
-    sleep(1)
+    # # Test Rover Forward
+    # Rover.move_reverse(DefaultMoveTime)
 
-    # Test Rover Forward
-    Rover.move_turnright(DefaultMoveTime, MoveSpeed=float(".25"))
+    # sleep(1)
 
-    print('exiting main...')
+    # # Test Rover Forward
+    # Rover.move_turnleft(DefaultMoveTime)
+
+    # sleep(1)
+
+    # # Test Rover Forward
+    # Rover.move_turnright(DefaultMoveTime, MoveSpeed=float(".25"))
+
+    # print('exiting main...')
+
+if __name__ == '__main__':
+    main()
 
 
-main()
 
 
 # # ______
