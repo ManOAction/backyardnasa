@@ -179,7 +179,7 @@ class MinimalSubscriber(Node):
         )
         # self.subscription   arning  # What is this?  Is it a typo?
 
-        self.rover = MotionController()
+        self.rover = MotionController(vPinMotorWake, vPinRMotF, vPinRMotR, vPinLMotF, vPinLMotR)
 
     def listener_callback(self, msg):
         command = msg.data
