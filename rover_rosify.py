@@ -170,7 +170,7 @@ class MotionController:
 
 class MinimalSubscriber(Node):
     def __init__(self) -> None:
-        super().__init__()('minimal_subscriber')
+        super().__init__('minimal_subscriber')
         self.subscription = self.create_subscription(
             String,
             'move',
@@ -258,6 +258,9 @@ def main(args=None):
     rclpy.spin(minimal_subscriber)
 
     minimal_subscriber.rover.stop()
+    minimal_subscriber.destroy_node()
+    rclpy.shutdown()
+
 
     # DefaultMoveTime = 1
 
