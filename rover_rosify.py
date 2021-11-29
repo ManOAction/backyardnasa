@@ -51,6 +51,12 @@ from std_msgs.msg import String
 
 # # Constants (move externaly to a config when you have time)
 # ####################################################
+vPinMotorWake = 17
+vPinRMotF = 20
+vPinRMotR = 21
+vPinLMotF = 19
+vPinLMotR = 26
+
 # NinetyDegreeTime = float('.65')
 # OneEightyDegreeTime = float('1.3')
 # RightTurnMod = float('1')  # float('1.109')
@@ -59,6 +65,28 @@ from std_msgs.msg import String
 # mag_offset_x = float('25')
 # mag_offset_y = float('-28')
 # mag_offset_z = float('-85')
+
+def display_options():
+    print("""
+
+    #############
+    x for exit
+    w for forward motor test
+
+
+    """)
+
+    return True
+
+    # wasd keys for directional controls. Capital letters for custom turns.
+    # c for 180
+    # b for Box Pattern
+
+    # r for Atmospheric Report
+    # p for Distance Sensing Mode
+    # h for Hunt Mode
+    # #############
+
 
 # ####################################################
 
@@ -94,20 +122,6 @@ from std_msgs.msg import String
 # | |  | | (_) \ V /  __/ | | | | |  __/ | | | |_
 # \_|  |_/\___/ \_/ \___|_| |_| |_|\___|_| |_|\__|
 #################################################
-
-vPinMotorWake = 17
-vPinRMotF = 20
-vPinRMotR = 21
-vPinLMotF = 19
-vPinLMotR = 26
-
-# MotorWake = LED(17)
-# MotorWake.off()
-
-# # Args are GPIO Pins for forward, backward, and motor controller sleep
-# RMotor = Motor(20, 21)  # Motor(19, 26, 13)
-# LMotor = Motor(19, 26)  # Motor(20, 21, 13)
-
 
 class MotionController:
 
@@ -258,8 +272,75 @@ def main(args=None):
     rclpy.spin(minimal_subscriber)
 
     minimal_subscriber.rover.stop()
+
+    rover_quit = False
+
+    while rover_quit is not True:
+
+        display_options()
+
+        print('What is thy bidding, master?')
+        user_input = input()
+
+        try:
+            # Core Commands
+            ######################
+            if user_input == 'x':
+                break
+
+            if user_input == 'w':
+                minimal_subscriber.listener_callback('forward')
+
+            # if user_input == 'a':
+            #     print('90 Time is set to {0}'.format(NinetyDegreeTime))
+            #     move_turnleft(float(NinetyDegreeTime))
+
+            # if user_input == 'A':
+            #     print('For how many seconds?')
+            #     move_turnleft(float(input()))
+
+            # if user_input == 's':
+            #     print('For how many seconds?')
+            #     move_reverse(float(input()))
+
+            # if user_input == 'd':
+            #     move_turnright(float(NinetyDegreeTime))
+
+            # if user_input == 'D':
+            #     print('For how many seconds?')
+            #     move_turnright(float(input()))
+
+            # if user_input == 'c':
+            #     print('180 Time is set to {0}'.format(OneEightyDegreeTime))
+            #     move_turnleft(float(OneEightyDegreeTime))
+
+            # if user_input == 'b':
+            #     print('How big a box?')
+            #     move_box(float(input()))
+
+            # if user_input == 'r':
+            #     report_atmo()
+
+            # if user_input == 'p':
+            #     report_dist()
+
+            # if user_input == 'h':
+            #     move_hunt()
+
+        except Exception as errormessage:
+            print('Problem with user input...')
+            print(errormessage)
+
+        rover_quit = False
+
     minimal_subscriber.destroy_node()
+
     rclpy.shutdown()
+
+    return True
+
+
+
 
 
     # DefaultMoveTime = 1
@@ -358,66 +439,7 @@ if __name__ == '__main__':
 
 # def rover_loop():
 
-#     rover_quit = False
-
-#     while rover_quit is not True:
-
-#         display_options()
-
-#         print('What is thy bidding, master?')
-#         user_input = input()
-
-#         try:
-#             # Core Commands
-#             ######################
-#             if user_input == 'x':
-#                 return False
-
-#             if user_input == 'w':
-#                 print('For how many seconds?')
-#                 move_forward(float(input()))
-
-#             if user_input == 'a':
-#                 print('90 Time is set to {0}'.format(NinetyDegreeTime))
-#                 move_turnleft(float(NinetyDegreeTime))
-
-#             if user_input == 'A':
-#                 print('For how many seconds?')
-#                 move_turnleft(float(input()))
-
-#             if user_input == 's':
-#                 print('For how many seconds?')
-#                 move_reverse(float(input()))
-
-#             if user_input == 'd':
-#                 move_turnright(float(NinetyDegreeTime))
-
-#             if user_input == 'D':
-#                 print('For how many seconds?')
-#                 move_turnright(float(input()))
-
-#             if user_input == 'c':
-#                 print('180 Time is set to {0}'.format(OneEightyDegreeTime))
-#                 move_turnleft(float(OneEightyDegreeTime))
-
-#             if user_input == 'b':
-#                 print('How big a box?')
-#                 move_box(float(input()))
-
-#             if user_input == 'r':
-#                 report_atmo()
-
-#             if user_input == 'p':
-#                 report_dist()
-
-#             if user_input == 'h':
-#                 move_hunt()
-
-#         except Exception as errormessage:
-#             print('Problem with user input...')
-#             print(errormessage)
-
-#         rover_quit = False
+#     
 
 #     return True
 
