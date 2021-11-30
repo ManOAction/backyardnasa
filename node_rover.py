@@ -1,144 +1,265 @@
-"""This is the ROS rover node for a twin motor rover managed with a PWM motor controller.
+#! /usr/bin/env python3
 
-# changelog
-2021-11-29, JDL: Converting from full robot loop to just locomotion node.
-2020-02-15, JDL: Creating stable loops and move commands
-2019-11-24, JDL: First draft.
+from motor import Motor
+import math
 
-"""
-
-from gpiozero import LED, Motor
-from time import sleep
-
-# ROS 2 Related Imports
+# ROS 2
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
+from geometry_msgs.msg import Twist
+from sensor_msgs.msg import Joy, Range
 
 
-# # Constants (move externaly to a config when you have time)
-# ####################################################
-vPinMotorWake = 17
-vPinRMotF = 20
-vPinRMotR = 21
-vPinLMotF = 19
-vPinLMotR = 26
+class Rover (Node):
+    '''Rover node suitable for a RPi robot with two PWM driven motors
 
+    Creates listener on /command to accept string-style commands.
+    Creates listener on /cmd_vel to accept twist messages.
+    Creates listener on /joy to accept xbox joystick input.
 
-# ___  ___                                    _
-# |  \/  |                                   | |
-# | .  . | _____   _____ _ __ ___   ___ _ __ | |_
-# | |\/| |/ _ \ \ / / _ \ '_ ` _ \ / _ \ '_ \| __|
-# | |  | | (_) \ V /  __/ | | | | |  __/ | | | |_
-# \_|  |_/\___/ \_/ \___|_| |_| |_|\___|_| |_|\__|
-#################################################
+    Attributes
+    ----------
+    speed : float
+        Speed along the X axis in meters per second; positive is
+        forward and negative is backward
+    spin : float
+        Rotation about the pivot point in radians per second; positive
+        is clockwise when viewed from above (right spin)
 
-class MotionController:
+    Methods
+    -------
+    stop()
+        Stop all movement of the wheelie
 
-    def __init__(self, PinMotorWake, PinRMotF, PinRMotR, PinLMotF, PinLMotR):
-        self.RMotor = Motor(PinRMotF, PinRMotR)
-        self.LMotor = Motor(PinLMotF, PinLMotR)
-        self.MotorWake = LED(PinMotorWake)
-        super().__init__()
+    '''
 
-    def move_forward(self, MoveTime, MoveSpeed=float("1")):
-        print('Moving forward.')
-        self.MotorWake.on()
-        self.RMotor.forward(MoveSpeed)
-        self.LMotor.forward(MoveSpeed)
-        sleep(MoveTime)
-        self.RMotor.stop()
-        self.LMotor.stop()
-        self.MotorWake.off()
-        print('End moving forward.')
-        return True
+    def __init__(self, name,
+                 pinRightFwd, pinRightRev, pinLeftFwd, pinLeftRev,
+                 wheel_diameter=.065, wheel_base=0.15,
+                 left_max_rpm=200.0, right_max_rpm=200.0,
+                 frequency=20):
 
-    def move_reverse(self, MoveTime, MoveSpeed=float("1")):
-        print('Moving backwards.')
-        self.MotorWake.on()
-        self.RMotor.backward(MoveSpeed)
-        self.LMotor.backward(MoveSpeed)
-        sleep(MoveTime)
-        self.RMotor.stop()
-        self.LMotor.stop()
-        self.MotorWake.off()
-        return True
+        """
+        Parameters
+        ----------
+        name: str
+            The node name that will be used for this robot; defaults
+            to "wheelie"
+        pinRightFwd : int
+            The RaspPi GPIO pin that goes high to create forward motion
+            on the right wheel
+        pinRightRev : int
+            The RaspPi GPIO pin that goes high to create reverse motion
+            on the right wheel
+        pinLeftFwd : int
+            The RaspPi GPIO pin that goes high to create forward motion
+            on the right wheel
+        pinLeftRev : int
+            The RaspPi GPIO pin that goes high to create reverse motion
+            on the right wheel
+        wheel_diameter : float
+            The diameter of the wheels in meters
+        wheel_base : float
+            The distance between the center of the wheels in meters
+        left_max_rpm : float
+            The number of revolutions per minute made by the left motor
+            when running at 100% power
+        right_max_rpm : float
+            The number of revolutions per minute made by the left motor
+            when running at 100% power
+        frequency : int
+            The frequency in Hz used to control the PWM motors
+        """
 
-    def move_turnleft(self, MoveTime, MoveSpeed=float("1")):
-        print('Turning left.')
-        self.MotorWake.on()
-        self.RMotor.forward(MoveSpeed)
-        self.LMotor.backward(MoveSpeed)
-        sleep(MoveTime)
-        self.RMotor.stop()
-        self.LMotor.stop()
-        self.MotorWake.off()
-        return True
+        super().__init__(name)
 
-    def move_turnright(self, MoveTime, MoveSpeed=float("1")):
-        print('Turning right.')
-        self.MotorWake.on()
-        self.LMotor.forward(MoveSpeed)
-        self.RMotor.backward(MoveSpeed)
-        sleep(MoveTime)
-        self.RMotor.stop()
-        self.LMotor.stop()
-        self.MotorWake.off()
-        return True
+        self._frequency = frequency
+        self._left_max_rpm = left_max_rpm
+        self._right_max_rpm = right_max_rpm
+        self._wheel_diameter = wheel_diameter
+        self._wheel_base = wheel_base
+        self._rightWheel = Motor(pinRightFwd, pinRightRev, frequency)
+        self._leftWheel = Motor(pinLeftFwd, pinLeftRev, frequency)
+
+        self.speed = 0.0
+        self.spin = 0.0
+        self.close = 0.30  # start slowing down when this close
+        self.tooclose = 0.10   # no forward motion when this close
+        self.distance = 100.0
+
+        self._command_subscription = self.create_subscription(
+            String,
+            'command',
+            self._command_callback,
+            10)
+
+        self._cmd_vel_subscription = self.create_subscription(
+            Twist,
+            'cmd_vel',
+            self._cmd_vel_callback,
+            2)
+
+        self._joy_subscription = self.create_subscription(
+            Joy,
+            'joy',
+            self._joy_callback,
+            5)
+
+        self._range_subscription = self.create_subscription(
+            Range,
+            'range',
+            self._range_callback,
+            5)
 
     def stop(self):
-        print('Motor controller shut off...')        
-        self.MotorWake.off()
-        return True
+        self._leftWheel.stop()
+        self._rightWheel.stop()
 
+    def max_speed(self):
+        '''Speed in meters per second at maximum RPM'''
+        rpm = (self._left_max_rpm + self._right_max_rpm) / 2.0
+        mps = rpm * math.pi * self._wheel_diameter / 60.0
+        return mps
 
-class MinimalSubscriber(Node):
-    def __init__(self) -> None:
-        super().__init__('minimal_subscriber')
-        self.subscription = self.create_subscription(
-            String,
-            'move',
-            self.listener_callback,
-            10
-        )
-        # self.subscription   arning  # What is this?  Is it a typo?
+    def max_twist(self):
+        '''Rotation in radians per second at maximum RPM'''
+        return self.max_speed() / self._wheel_diameter
 
-        self.rover = MotionController(vPinMotorWake, vPinRMotF, vPinRMotR, vPinLMotF, vPinLMotR)
+    def _forward(self, speed=100):
+        self._rightWheel.forward(speed)
+        self._leftWheel.forward(speed)
 
-    def listener_callback(self, msg):
+    def _reverse(self, speed=100):
+        self._rightWheel.reverse(speed)
+        self._leftWheel.reverse(speed)
+
+    def _left(self, speed=100):
+        self._rightWheel.reverse(speed)
+        self._leftWheel.forward(speed)
+
+    def _right(self, speed=100):
+        self._rightWheel.forward(speed)
+        self._leftWheel.reverse(speed)
+
+    def _command_callback(self, msg):
         command = msg.data
         if command == 'forward':
-            print('moving forward')
-            self.rover.move_forward(1)
-        elif command == 'backward':
-            print('moving backward')
-            self.rover.move_reverse(1)
+            self._forward()
+        elif command == 'reverse':
+            self._reverse()
         elif command == 'left':
-            print('turning left')
-            self.rover.turnleft(1)
+            self._left()
         elif command == 'right':
-            print('turning right')
-            self.rover.turnright(1)
+            self._right()
+        elif command == 'stop':
+            self.stop()
+        else:
+            print('Unknown command, stopping instead')
+            self.stop()
 
+    def _joy_callback(self, msg):
+        '''Translate XBox buttons into speed and spin
+
+        Just use the left joystick (for now):
+        LSB left/right  axes[0]     +1 (left) to -1 (right)
+        LSB up/down     axes[1]     +1 (up) to -1 (back)
+        LB              buttons[5]  1 pressed, 0 otherwise
+        '''
+
+        if abs(msg.axes[0]) > 0.10:
+            self.spin = msg.axes[0]
+        else:
+            self.spin = 0.0
+
+        if abs(msg.axes[1]) > 0.10:
+            self.speed = msg.axes[1]
+        else:
+            self.speed = 0.0
+
+        if msg.buttons[5] == 1:
+            self.speed = 0
+            self.spin = 0
+
+        self._set_motor_speeds()
+
+    def _cmd_vel_callback(self, msg):
+        self.speed = msg.linear.x
+        self.spin = msg.angular.z
+        self._set_motor_speeds()
+
+    def _range_callback(self, msg):
+        self.distance = msg.range
+        self._set_motor_speeds()
+
+    def _set_motor_speeds(self):
+        # TODO: inject a stop() if no speeds seen for a while
+        #
+        # Scary math ahead.
+        #
+        # First figure out the speed of each wheel based on spin: each wheel
+        # covers self._wheel_base meters in one radian, so the target speed
+        # for each wheel in meters per sec is spin (radians/sec) times
+        # wheel_base divided by wheel_diameter
+        #
+        right_twist_mps = self.spin * self._wheel_base / self._wheel_diameter
+        left_twist_mps = -1.0 * self.spin * \
+            self._wheel_base / self._wheel_diameter
+        #
+        # Now add in forward motion.
+        #
+        left_mps = self.speed + left_twist_mps
+        right_mps = self.speed + right_twist_mps
+        #
+        # Convert meters/sec into RPM: for each revolution, a wheel travels
+        # pi * diameter meters, and each minute has 60 seconds.
+        #
+        left_target_rpm = (left_mps * 60.0) / (math.pi * self._wheel_diameter)
+        right_target_rpm = (right_mps * 60.0) / \
+            (math.pi * self._wheel_diameter)
+        #
+        left_percentage = (left_target_rpm / self._left_max_rpm) * 100.0
+        right_percentage = (right_target_rpm / self._right_max_rpm) * 100.0
+        #
+        # clip to +- 100%
+        left_percentage = max(min(left_percentage, 100.0), -100.0)
+        right_percentage = max(min(right_percentage, 100.0), -100.0)
+        #
+        # Add in a governor to cap forward motion when we're about
+        # to collide with something (but still backwards motion)
+        governor = 1.0
+        if self.distance < self.tooclose:
+            governor = 0.0
+        elif self.distance < self.close:
+            governor = (self.distance - self.tooclose) / \
+                (self.close - self.tooclose)
+        if right_percentage > 0:
+            right_percentage *= governor
+        if left_percentage > 0:
+            left_percentage *= governor
+        #
+        self._rightWheel.run(right_percentage)
+        self._leftWheel.run(left_percentage)
 
 
 def main(args=None):
+
     rclpy.init(args=args)
 
-    minimal_subscriber = MinimalSubscriber()
+    rover = Rover('wheelie', pinRightFwd=20, pinRightRev=21,
+                pinLeftFwd=19, pinLeftRev=26, left_max_rpm=195,
+                right_max_rpm=202)
 
-    minimal_subscriber.rover.stop()
-
-    rclpy.spin(minimal_subscriber)
-
-    minimal_subscriber.destroy_node()
-
+    # enable the keyboard controller:
+    # ros2 run teleop_twist_keyboard teleop_twist_keyboard
+    #
+    # enable the joystick:
+    # ros2 run joy joy_node
+    #
+    print("Spinning.")
+    rclpy.spin(rover)
     rclpy.shutdown()
-
-    return True
 
 
 if __name__ == '__main__':
     main()
-
-print('I think we\'re done here.')
