@@ -68,17 +68,20 @@ class Sensors (Node):
 
         # self._frequency = frequency
         self._distance_sensor = Echo(pinTrigger, pinEcho)
+        self._sensor_samples = 3
+
+
         self._distance_publisher = self.create_publisher(Range, "range", 5)
         self._range_msg = Range()
         self._range_msg.radiation_type = Range.ULTRASOUND
-        self._range_msg.field_of_view = self._distance_sensor.angle
-        self._range_msg.min_range = self._distance_sensor.min_range
-        self._range_msg.max_range = self._distance_sensor.max_range
+        self._range_msg.field_of_view = '.261' # Standard FOV for HC-SR04 in radians
+        self._range_msg.min_range = '.02' # Standard HC-SR04 minimum range in meters.
+        self._range_msg.max_range = '4' # Standard HC-SR04 minimum range in meters.
 
         self.start()
 
     def _distance_callback (self):
-        self.distance = self._distance_sensor.measure()
+        self.distance = self._distance_sensor.read('cm', self._sensor_samples)
         self._range_msg.range = self.distance
         self._distance_publisher.publish(self._range_msg)
 
