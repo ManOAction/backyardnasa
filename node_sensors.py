@@ -66,7 +66,7 @@ class Sensors (Node):
 
         super().__init__(name)
 
-        # self._frequency = frequency
+        self._frequency = frequency
         self._distance_sensor = Echo(pinTrigger, pinEcho)
         self._sensor_samples = 3
 
