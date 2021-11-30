@@ -89,7 +89,7 @@ class Sensors (Node):
         self.destroy_timer(self._distance_timer)
 
     def start (self):
-        self._distance_timer = self.create_timer (1.0 / self._frequency, self._distance_callback)
+        self._distance_timer = self.create_timer(1.0 / self._frequency, self._distance_callback)
 
 
 def main(args=None):
