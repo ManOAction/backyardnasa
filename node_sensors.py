@@ -74,9 +74,9 @@ class Sensors (Node):
         self._distance_publisher = self.create_publisher(Range, "range", 5)
         self._range_msg = Range()
         self._range_msg.radiation_type = Range.ULTRASOUND
-        self._range_msg.field_of_view = '.261' # Standard FOV for HC-SR04 in radians
-        self._range_msg.min_range = '.02' # Standard HC-SR04 minimum range in meters.
-        self._range_msg.max_range = '4' # Standard HC-SR04 minimum range in meters.
+        self._range_msg.field_of_view = float('.261') # Standard FOV for HC-SR04 in radians
+        self._range_msg.min_range = float('.02') # Standard HC-SR04 minimum range in meters.
+        self._range_msg.max_range = float('4') # Standard HC-SR04 minimum range in meters.
 
         self.start()
 
