@@ -1,6 +1,4 @@
 #! /usr/bin/env python3
-import time
-from range_sensor import UltrasonicDistanceSensor
 
 #ROS 2
 import rclpy
