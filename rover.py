@@ -261,7 +261,7 @@ def rover_initialize():
     MotorWake.off()
 
     # Args are GPIO Pins for forward, backward, and motor controller sleep
-    RMotor = Motor(20, 21)  # Motor(19, 26, 13)
+    RMotor = Motor(6, 13)  # Motor(19, 26, 13)
     LMotor = Motor(19, 26)  # Motor(20, 21, 13)
 
     return True
