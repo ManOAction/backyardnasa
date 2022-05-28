@@ -241,14 +241,14 @@ def rover_initialize():
     global RMotor, LMotor, MotorWake, AtmoSensor, LeftEye, RightEye, Accelo, Gyro
 
     # Initializing I2C for sensors
-    i2c = I2C(board.SCL, board.SDA)
+    # i2c = I2C(board.SCL, board.SDA)
 
-    # Initializing Gyro and Magnetometer
-    Accelo = FXOS8700(i2c)
-    Gyro = FXAS21002C(i2c)
+    # # Initializing Gyro and Magnetometer
+    # Accelo = FXOS8700(i2c)
+    # Gyro = FXAS21002C(i2c)
 
-    # Initializing Atmo Sensor
-    AtmoSensor = SI7021(i2c)
+    # # Initializing Atmo Sensor
+    # AtmoSensor = SI7021(i2c)
 
     # Annoyingly it looks like the HCSR04 Libary uses DPI Pin Numbering instead
     # of Broadcom.  Check here https://pinout.xyz/pinout/pin18_gpio24
