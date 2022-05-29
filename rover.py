@@ -240,7 +240,7 @@ def rover_initialize():
 
     global RMotor, LMotor, MotorWake, AtmoSensor, LeftEye, RightEye, Accelo, Gyro
 
-    Initializing I2C for sensors
+    # Initializing I2C for sensors
     i2c = I2C(board.SCL, board.SDA)
 
     # Initializing Gyro and Magnetometer
