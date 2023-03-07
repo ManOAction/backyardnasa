@@ -1,0 +1,3 @@
+source;share\examples_rclcpp_async_client\hook\cmake_prefix_path.ps1
+source;share\examples_rclcpp_async_client\hook\cmake_prefix_path.bat
+source;share\examples_rclcpp_async_client\hook\cmake_prefix_path.dsv
