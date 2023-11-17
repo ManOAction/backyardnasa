@@ -5,8 +5,8 @@ MatildaDisk_v1
 
 # ROS2 Stuff
 devel/
-logs/
-build/
+ros2/log/
+ros2/build/
 bin/
 lib/
 msg_gen/
