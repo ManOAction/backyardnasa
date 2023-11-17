@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Webhook Test with HTMX Response</title>
+    <script src="https://unpkg.com/htmx.org@1.6.0/dist/htmx.min.js"></script>
+</head>
+
+<body>
+    <h1>Webhook Test Page</h1>
+    <form hx-post="http://localhost:8000/webhook" hx-encoding="application/json" hx-target="#response"
+        hx-swap="outerHTML">
+        <input type="hidden" name="message" value="Hello from the HTML page with HTMX!">
+        <button type="submit">Call Webhook</button>
+    </form>
+    <div id="response"></div>
+</body>
+
+</html>
