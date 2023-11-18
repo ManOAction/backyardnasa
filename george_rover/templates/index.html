@@ -4,14 +4,57 @@
 <head>
     <title>Webhook Test with HTMX Response</title>
     <script src="https://unpkg.com/htmx.org@1.6.0/dist/htmx.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #response {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #dff0d8;
+            color: #3c763d;
+            border-radius: 5px;
+            display: inline-block;
+        }
+    </style>
+    <base href="http://localhost:8000/">
 </head>
 
 <body>
-    <h1>Webhook Test Page</h1>
-    <form hx-post="http://localhost:8000/webhook" hx-headers="Content-Type: application/json" hx-target="#response"
-        hx-swap="outerHTML">
-        <input type="hidden" name="message" value="Hello from the HTML page with HTMX!">
-        <button type="submit">Call Webhook</button>
+    <h1>George Rover Test Page</h1>
+    <form hx-get="/button_response" hx-target="#response" hx-swap="outerHTML">
+        <button type="submit">Get Message</button>
     </form>
     <div id="response"></div>
 </body>
