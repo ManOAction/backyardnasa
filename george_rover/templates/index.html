@@ -6,46 +6,54 @@
     <script src="https://unpkg.com/htmx.org@1.6.0/dist/htmx.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eaeaea;
+            padding: 40px;
             text-align: center;
         }
 
         h1 {
-            color: #333;
+            color: #5a5a5a;
+            font-size: 2em;
+            margin-bottom: 0.5em;
         }
 
         form {
             margin: 20px auto;
             padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: inline-block;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            width: 300px;
         }
 
         button {
-            background-color: #007bff;
+            background-color: #4caf50;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 25px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
+            transition: background-color 0.3s;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #388e3c;
         }
 
-        #response {
+        .response {
             margin-top: 20px;
-            padding: 15px;
+            padding: 20px;
             background-color: #dff0d8;
             color: #3c763d;
-            border-radius: 5px;
+            border-radius: 8px;
             display: inline-block;
+            width: 300px;
+            text-align: left;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
         }
     </style>
     <base href="http://localhost:8000/">
@@ -53,10 +61,20 @@
 
 <body>
     <h1>George Rover Test Page</h1>
-    <form hx-get="/button_response" hx-target="#response" hx-swap="outerHTML">
-        <button type="submit">Get Message</button>
+    <form hx-get="/button_response1" hx-target="#response1" hx-swap="outerHTML">
+        <button type="submit">Get Message One</button>
     </form>
-    <div id="response"></div>
+    <div id="response1" class="response"></div>
+
+    <form hx-get="/button_response2" hx-target="#response2" hx-swap="outerHTML">
+        <button type="submit">Get Message Two</button>
+    </form>
+    <div id="response2" class="response"></div>
+
+    <form hx-get="/button_response3" hx-target="#response3" hx-swap="outerHTML">
+        <button type="submit">Get Message Three</button>
+    </form>
+    <div id="response3" class="response"></div>
 </body>
 
 </html>

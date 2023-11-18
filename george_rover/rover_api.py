@@ -11,10 +11,24 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/button_response", methods=["GET"])
-def webhook():
+@app.route("/button_response1", methods=["GET"])
+def response_1():
     ic(request)
-    message = "You pressed the button!"
+    message = "You pressed button number one!"
+    return render_template_string("<span>{{ message }}</span>", message=message)
+
+
+@app.route("/button_response2", methods=["GET"])
+def response_2():
+    ic(request)
+    message = "You pressed button number two!"
+    return render_template_string("<span>{{ message }}</span>", message=message)
+
+
+@app.route("/button_response3", methods=["GET"])
+def response_3():
+    ic(request)
+    message = "You pressed button number three!"
     return render_template_string("<span>{{ message }}</span>", message=message)
 
 
